@@ -12,5 +12,5 @@
     <string name="filter">Filter</string>
     <string name="hide_closed_restaurant">Hide Closed Restaurants</string>
     <string name="filter_restaurants">Filter Restaurants</string>
-    <string name="filter_restaurants_types">Filter Restaurants Types</string>
+    <string name="filter_restaurant_types">Filter Restaurant Types</string>
 </resources>
