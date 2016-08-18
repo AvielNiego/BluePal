@@ -33,6 +33,7 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
     @Nullable private Location     location;
     @Nullable private RecyclerView recyclerView;
     private Set<String> selectedTypes = new HashSet<>();
+    private boolean filterClosed;
 
     public RestaurantListAdapter()
     {
@@ -56,9 +57,10 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
             return;
         }
 
-        filteredRestaurants();
+        filterRestaurants();
         sortRestaurants();
         recyclerView.invalidate();
+        notifyDataSetChanged();
     }
 
     @Override
@@ -73,6 +75,11 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
     {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_restaurant_list_item, parent, false);
         return new ViewHolder(view);
+    }
+
+    public boolean isFilterClosed()
+    {
+        return filterClosed;
     }
 
     @Override
@@ -174,11 +181,10 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
     public void setSelectedTypes(final Set<String> selectedTypes)
     {
         this.selectedTypes = selectedTypes;
-        notifyDataSetChanged();
         updateRecyclerView();
     }
 
-    private void filteredRestaurants()
+    private void filterRestaurants()
     {
         if (selectedTypes.isEmpty())
         {
@@ -186,12 +192,35 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
         }
         else
         {
-            filteredRestaurants = getFilteredRestaurants();
+            filteredRestaurants = getFilteredByTypeRestaurants();
+        }
+
+        if (filterClosed)
+        {
+            filteredRestaurants = filterClosedRestaurants(filteredRestaurants);
         }
     }
 
     @NonNull
-    private ArrayList<RestaurantContent> getFilteredRestaurants()
+    private ArrayList<RestaurantContent> filterClosedRestaurants(List<RestaurantContent> restaurants)
+    {
+        return new ArrayList<>(Collections2.filter(restaurants, new Predicate<RestaurantContent>()
+        {
+            @Override
+            public boolean apply(RestaurantContent input)
+            {
+                try
+                {
+                    return input.isOpenNow();
+                } catch (RestaurantContent.OpenHoursDoesNotPresented e) {
+                    return true;
+                }
+            }
+        }));
+    }
+
+    @NonNull
+    private ArrayList<RestaurantContent> getFilteredByTypeRestaurants()
     {
         return new ArrayList<>(Collections2.filter(restaurants, new Predicate<RestaurantContent>()
         {
@@ -208,6 +237,18 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
                 });
             }
         }));
+    }
+
+    public void showClosed()
+    {
+        this.filterClosed = false;
+        updateRecyclerView();
+    }
+
+    public void filterClosed()
+    {
+        this.filterClosed = true;
+        updateRecyclerView();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder

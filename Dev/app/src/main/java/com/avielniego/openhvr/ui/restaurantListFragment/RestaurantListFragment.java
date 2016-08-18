@@ -14,6 +14,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 
 import com.avielniego.openhvr.R;
 
@@ -109,6 +111,60 @@ public class RestaurantListFragment extends Fragment
 
     private void openFilterDialog()
     {
+        new AlertDialog.Builder(getContext())
+                .setTitle(R.string.filter_restaurants)
+                .setView(getRestaurantFilterDialog())
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {}
+                })
+                .create().show();
+    }
+
+    private View getRestaurantFilterDialog()
+    {
+        View view = getActivity().getLayoutInflater().inflate(R.layout.restaurant_filter_dialog, null);
+        initFilterClosedCheckbox(view);
+        view.findViewById(R.id.filter_restaurant_by_type).setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                openFilterTypesDialog();
+            }
+        });
+        return view;
+    }
+
+    private void initFilterClosedCheckbox(View view)
+    {
+        CheckBox filterClosedCheckbox = (CheckBox) view.findViewById(R.id.hide_closed_checkbox);
+        filterClosedCheckbox.setChecked(adapter.isFilterClosed());
+        filterClosedCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b)
+            {
+                onHideClosedCheckboxCheckedChange(b);
+            }
+        });
+    }
+
+    private void onHideClosedCheckboxCheckedChange(boolean isChecked)
+    {
+        if (isChecked)
+        {
+            adapter.filterClosed();
+        }
+        else
+        {
+            adapter.showClosed();
+        }
+    }
+
+    private void openFilterTypesDialog()
+    {
         new AlertDialog.Builder(getContext()).setMultiChoiceItems(restaurantTypes.toArray(new String[restaurantTypes.size()]),
                                                                   getCurrentSelectedTypes(),
                                                                   new DialogInterface.OnMultiChoiceClickListener()
@@ -127,13 +183,7 @@ public class RestaurantListFragment extends Fragment
                     {
                         filterRestaurantByType();
                     }
-                }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener()
-        {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i)
-            {
-            }
-        }).create().show();
+                }).create().show();
     }
 
     private void filterRestaurantByType()

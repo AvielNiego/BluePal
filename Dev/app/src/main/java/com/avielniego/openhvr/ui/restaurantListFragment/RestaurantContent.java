@@ -34,7 +34,7 @@ public class RestaurantContent
         {
             return tryIsOpenNow();
         } catch (IndexOutOfBoundsException | NumberFormatException e) {
-            throw  new OpenHoursDoesNotPresented();
+            throw new OpenHoursDoesNotPresented();
         }
     }
 
@@ -96,24 +96,20 @@ public class RestaurantContent
 
         RestaurantContent that = (RestaurantContent) o;
 
-        if (Double.compare(that.latitude, latitude) != 0)
+        if (name != null ? !name.equals(that.name) : that.name != null)
             return false;
-        if (Double.compare(that.longitude, longitude) != 0)
+        if (city != null ? !city.equals(that.city) : that.city != null)
             return false;
-        return name.equals(that.name);
+        return address != null ? address.equals(that.address) : that.address == null;
 
     }
 
     @Override
     public int hashCode()
     {
-        int result;
-        long temp;
-        result = name.hashCode();
-        temp = Double.doubleToLongBits(latitude);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(longitude);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        int result = name != null ? name.hashCode() : 0;
+        result = 31 * result + (city != null ? city.hashCode() : 0);
+        result = 31 * result + (address != null ? address.hashCode() : 0);
         return result;
     }
 
