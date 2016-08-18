@@ -1,0 +1,20 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="openTextStyle">
+        <item name="android:textColor">@color/openColor</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="closedTextStyle">
+        <item name="android:textColor">@color/closedColor</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+</resources>

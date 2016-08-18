@@ -1,0 +1,12 @@
+<resources xmlns:xliff="http://schemas.android.com/tools">
+    <string name="app_name">OpenHvr</string>
+    <string name="content_authority">com.avielniego.restaurant</string>
+    <string name="pref_location_status_key">server-status</string>
+    <string name="comma" translatable="false">, </string>
+    <string name="address_format"><xliff:g id="address">%1$s</xliff:g>, <xliff:g id="city">%2$s</xliff:g></string>
+    <string name="open">Open</string>
+    <string name="closed">Closed</string>
+    <string name="location_permission_title">Location Permission</string>
+    <string name="location_permission_rational">Location is required to show you nearby restaurants</string>
+    <string name="distance">"<xliff:g id="distance">%1$s</xliff:g> km"</string>
+</resources>
