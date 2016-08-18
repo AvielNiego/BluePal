@@ -9,4 +9,5 @@
     <string name="location_permission_title">Location Permission</string>
     <string name="location_permission_rational">Location is required to show nearby restaurants</string>
     <string name="distance">"<xliff:g id="distance">%1$s</xliff:g>km"</string>
+    <string name="filter">Filter</string>
 </resources>

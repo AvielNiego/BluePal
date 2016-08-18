@@ -1,70 +1,34 @@
 package com.avielniego.openhvr.ui.restaurantListFragment;
 
-import android.database.Cursor;
+import android.content.DialogInterface;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.avielniego.openhvr.R;
-import com.avielniego.openhvr.data.storedData.RestaurantContract.RestaurantEntry;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-public class RestaurantListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>
+public class RestaurantListFragment extends Fragment
 {
-    public static final String[] PROJECTION = new String[]{
-            RestaurantEntry.TABLE_NAME + "." + RestaurantEntry._ID,
-            RestaurantEntry.TABLE_NAME + "." + RestaurantEntry.COLUMN_RESTAURANT_IMAGE,
-            RestaurantEntry.TABLE_NAME + "." + RestaurantEntry.COLUMN_RESTAURANT_NAME,
-            RestaurantEntry.TABLE_NAME + "." + RestaurantEntry.COLUMN_RESTAURANT_DESC,
-            RestaurantEntry.TABLE_NAME + "." + RestaurantEntry.COLUMN_RESTAURANT_AREA,
-            RestaurantEntry.TABLE_NAME + "." + RestaurantEntry.COLUMN_RESTAURANT_CITY,
-            RestaurantEntry.TABLE_NAME + "." + RestaurantEntry.COLUMN_RESTAURANT_ADDRESS,
-            RestaurantEntry.TABLE_NAME + "." + RestaurantEntry.COLUMN_RESTAURANT_PHONE,
-            RestaurantEntry.TABLE_NAME + "." + RestaurantEntry.COLUMN_RESTAURANT_CATEGORY,
-            RestaurantEntry.TABLE_NAME + "." + RestaurantEntry.COLUMN_RESTAURANT_TYPE,
-            RestaurantEntry.TABLE_NAME + "." + RestaurantEntry.COLUMN_RESTAURANT_WEEK_OPEN_HOURS,
-            RestaurantEntry.TABLE_NAME + "." + RestaurantEntry.COLUMN_RESTAURANT_FRIDAY_OPEN_HOURS,
-            RestaurantEntry.TABLE_NAME + "." + RestaurantEntry.COLUMN_RESTAURANT_SAT_OPEN_HOURS,
-            RestaurantEntry.TABLE_NAME + "." + RestaurantEntry.COLUMN_RESTAURANT_IS_KOSHER,
-            RestaurantEntry.TABLE_NAME + "." + RestaurantEntry.COLUMN_RESTAURANT_HANDICAP,
-            RestaurantEntry.TABLE_NAME + "." + RestaurantEntry.COLUMN_RESTAURANT_WEBSITE,
-            RestaurantEntry.TABLE_NAME + "." + RestaurantEntry.COLUMN_RESTAURANT_LATITUDE,
-            RestaurantEntry.TABLE_NAME + "." + RestaurantEntry.COLUMN_RESTAURANT_LONGITUDE};
-
-    public static final int RESTAURANT_ID_COLUMN_INDEX          = 0;
-    public static final int COLUMN_RESTAURANT_IMAGE             = 1;
-    public static final int RESTAURANT_NAME_COLUMN_INDEX        = 2;
-    public static final int COLUMN_RESTAURANT_DESC              = 3;
-    public static final int COLUMN_RESTAURANT_AREA              = 4;
-    public static final int COLUMN_RESTAURANT_CITY              = 5;
-    public static final int COLUMN_RESTAURANT_ADDRESS           = 6;
-    public static final int COLUMN_RESTAURANT_PHONE             = 7;
-    public static final int COLUMN_RESTAURANT_CATEGORY          = 8;
-    public static final int COLUMN_RESTAURANT_TYPE              = 9;
-    public static final int COLUMN_RESTAURANT_WEEK_OPEN_HOURS   = 10;
-    public static final int COLUMN_RESTAURANT_FRIDAY_OPEN_HOURS = 11;
-    public static final int COLUMN_RESTAURANT_SAT_OPEN_HOURS    = 12;
-    public static final int COLUMN_RESTAURANT_IS_KOSHER         = 13;
-    public static final int COLUMN_RESTAURANT_HANDICAP          = 14;
-    public static final int COLUMN_RESTAURANT_WEBSITE           = 15;
-    public static final int COLUMN_RESTAURANT_LATITUDE          = 16;
-    public static final int COLUMN_RESTAURANT_LONGITUDE         = 17;
-
-
-    private static final int RESTAURANT_LOADER_ID = 0;
     private RestaurantListAdapter adapter = new RestaurantListAdapter();
+
+    private List<String> restaurantTypes = new ArrayList<>();
+    private Set<String>  selectedTypes   = new HashSet<>();
 
     public RestaurantListFragment()
     {
@@ -82,14 +46,121 @@ public class RestaurantListFragment extends Fragment implements LoaderManager.Lo
     public void onActivityCreated(@Nullable Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
-        getLoaderManager().initLoader(RESTAURANT_LOADER_ID, null, this);
+        launchRestaurantLoader();
         adapter.setContext(getContext());
+    }
+
+    private void launchRestaurantLoader()
+    {
+        RestaurantLoader restaurantLoader = new RestaurantLoader(getContext(), new RestaurantLoader.RestaurantLoadListener()
+        {
+            @Override
+            public void onRestaurantLoaded(List<RestaurantContent> restaurants)
+            {
+                RestaurantListFragment.this.onRestaurantLoaded(restaurants);
+            }
+        });
+        getLoaderManager().initLoader(RestaurantLoader.RESTAURANT_LOADER_ID, null, restaurantLoader);
+    }
+
+    private void onRestaurantLoaded(List<RestaurantContent> restaurants)
+    {
+        adapter.setRestaurants(restaurants);
+        setRestaurantTypes(restaurants);
+    }
+
+    private void setRestaurantTypes(List<RestaurantContent> restaurants)
+    {
+        restaurantTypes.clear();
+        Set<String> types = new HashSet<>();
+        for (RestaurantContent restaurant : restaurants)
+        {
+            types.addAll(Arrays.asList(restaurant.type.split(",")));
+        }
+        restaurantTypes = new ArrayList<>(types);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.restaurant_list_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case R.id.action_filter:
+                openFilterDialog();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void openFilterDialog()
+    {
+        new AlertDialog.Builder(getContext()).setMultiChoiceItems(restaurantTypes.toArray(new String[restaurantTypes.size()]),
+                                                                  getCurrentSelectedTypes(),
+                                                                  new DialogInterface.OnMultiChoiceClickListener()
+                                                                  {
+                                                                      @Override
+                                                                      public void onClick(DialogInterface dialogInterface,
+                                                                                          int i, boolean b)
+                                                                      {
+                                                                          onTypeSelected(i, b);
+                                                                      }
+                                                                  })
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i)
+                    {
+                        filterRestaurantByType();
+                    }
+                }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i)
+            {
+            }
+        }).create().show();
+    }
+
+    private void filterRestaurantByType()
+    {
+        adapter.setSelectedTypes(selectedTypes);
+    }
+
+    private void onTypeSelected(int typeIndex, boolean isSelected)
+    {
+        if (isSelected)
+        {
+            selectedTypes.add(restaurantTypes.get(typeIndex));
+        }
+        else
+        {
+            selectedTypes.remove(restaurantTypes.get(typeIndex));
+        }
+    }
+
+    private boolean[] getCurrentSelectedTypes()
+    {
+        boolean[] selectedTypes = new boolean[restaurantTypes.size()];
+        for (int i = 0; i < restaurantTypes.size(); i++)
+        {
+            selectedTypes[i] = this.selectedTypes.contains(restaurantTypes.get(i));
+        }
+        return selectedTypes;
     }
 
     @Override
@@ -105,81 +176,6 @@ public class RestaurantListFragment extends Fragment implements LoaderManager.Lo
         RecyclerView recyclerView = ((RecyclerView) view.findViewById(R.id.list));
         recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
         recyclerView.setAdapter(adapter);
-    }
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args)
-    {
-        switch (id)
-        {
-            case RESTAURANT_LOADER_ID:
-                return new CursorLoader(getActivity(), RestaurantEntry.CONTENT_URI, PROJECTION, null, null, null);
-            default:
-                return null;
-        }
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data)
-    {
-        switch (loader.getId())
-        {
-            case RESTAURANT_LOADER_ID:
-                onRestaurantLoadFinished(data);
-                break;
-        }
-    }
-
-    private void onRestaurantLoadFinished(Cursor data)
-    {
-        adapter.setRestaurants(clearDuplicates(cursorDataToRestaurantsContent(data)));
-    }
-
-    private List<RestaurantContent> clearDuplicates(List<RestaurantContent> restaurantContents)
-    {
-        return new ArrayList<>(new HashSet<>(restaurantContents));
-    }
-
-    private List<RestaurantContent> cursorDataToRestaurantsContent(Cursor data)
-    {
-        List<RestaurantContent> restaurantsContent = new ArrayList<>();
-        data.moveToFirst();
-        while (!data.isAfterLast())
-        {
-            restaurantsContent.add(cursorDataToRestaurantContent(data));
-            data.moveToNext();
-        }
-        return restaurantsContent;
-    }
-
-    private RestaurantContent cursorDataToRestaurantContent(Cursor data)
-    {
-        RestaurantContent content = new RestaurantContent();
-        content.id = data.getLong(RESTAURANT_ID_COLUMN_INDEX);
-        content.image = data.getString(COLUMN_RESTAURANT_IMAGE);
-        content.name = data.getString(RESTAURANT_NAME_COLUMN_INDEX);
-        content.desc = data.getString(COLUMN_RESTAURANT_DESC);
-        content.area = data.getString(COLUMN_RESTAURANT_AREA);
-        content.city = data.getString(COLUMN_RESTAURANT_CITY);
-        content.address = data.getString(COLUMN_RESTAURANT_ADDRESS);
-        content.phone = data.getString(COLUMN_RESTAURANT_PHONE);
-        content.category = data.getString(COLUMN_RESTAURANT_CATEGORY);
-        content.type = data.getString(COLUMN_RESTAURANT_TYPE);
-        content.weekOpenHours = data.getString(COLUMN_RESTAURANT_WEEK_OPEN_HOURS);
-        content.fridayOpenHours = data.getString(COLUMN_RESTAURANT_FRIDAY_OPEN_HOURS);
-        content.satOpenHours = data.getString(COLUMN_RESTAURANT_SAT_OPEN_HOURS);
-        content.isKosher = data.getString(COLUMN_RESTAURANT_IS_KOSHER);
-        content.handicap = data.getString(COLUMN_RESTAURANT_HANDICAP);
-        content.website = data.getString(COLUMN_RESTAURANT_WEBSITE);
-        content.latitude = data.getDouble(COLUMN_RESTAURANT_LATITUDE);
-        content.longitude = data.getDouble(COLUMN_RESTAURANT_LONGITUDE);
-        return content;
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader)
-    {
-        adapter.setRestaurants(new ArrayList<RestaurantContent>());
     }
 
     public void setLocation(Location location)

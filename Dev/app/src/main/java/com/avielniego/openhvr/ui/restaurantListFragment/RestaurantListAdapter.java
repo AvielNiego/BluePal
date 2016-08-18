@@ -2,6 +2,7 @@ package com.avielniego.openhvr.ui.restaurantListFragment;
 
 import android.content.Context;
 import android.location.Location;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,18 +14,25 @@ import android.widget.Toast;
 
 import com.avielniego.openhvr.R;
 import com.bumptech.glide.Glide;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Iterables;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAdapter.ViewHolder>
 {
-    private List<RestaurantContent> restaurants = new ArrayList<>();
+    private List<RestaurantContent> filteredRestaurants = new ArrayList<>();
+    private List<RestaurantContent> restaurants         = new ArrayList<>();
     @Nullable private Context      context;
     @Nullable private Location     location;
     @Nullable private RecyclerView recyclerView;
+    private Set<String> selectedTypes = new HashSet<>();
 
     public RestaurantListAdapter()
     {
@@ -43,11 +51,14 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
 
     private void updateRecyclerView()
     {
-        if (recyclerView != null)
+        if (recyclerView == null)
         {
-            sortRestaurants();
-            recyclerView.invalidate();
+            return;
         }
+
+        filteredRestaurants();
+        sortRestaurants();
+        recyclerView.invalidate();
     }
 
     @Override
@@ -67,7 +78,7 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position)
     {
-        final RestaurantContent restaurant = restaurants.get(position);
+        final RestaurantContent restaurant = filteredRestaurants.get(position);
         holder.item = restaurant;
         holder.nameTextView.setText(restaurant.name);
         holder.typeTextView.setText(restaurant.type);
@@ -137,7 +148,7 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
     @Override
     public int getItemCount()
     {
-        return restaurants.size();
+        return filteredRestaurants.size();
     }
 
     public void setLocation(@Nullable Location location)
@@ -150,7 +161,7 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
     {
         if (location == null)
             return;
-        Collections.sort(restaurants, new Comparator<RestaurantContent>()
+        Collections.sort(filteredRestaurants, new Comparator<RestaurantContent>()
         {
             @Override
             public int compare(RestaurantContent restaurantContent, RestaurantContent t1)
@@ -158,6 +169,45 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
                 return Float.valueOf(restaurantContent.getDistanceFrom(location)).compareTo(t1.getDistanceFrom(location));
             }
         });
+    }
+
+    public void setSelectedTypes(final Set<String> selectedTypes)
+    {
+        this.selectedTypes = selectedTypes;
+        notifyDataSetChanged();
+        updateRecyclerView();
+    }
+
+    private void filteredRestaurants()
+    {
+        if (selectedTypes.isEmpty())
+        {
+            filteredRestaurants = restaurants;
+        }
+        else
+        {
+            filteredRestaurants = getFilteredRestaurants();
+        }
+    }
+
+    @NonNull
+    private ArrayList<RestaurantContent> getFilteredRestaurants()
+    {
+        return new ArrayList<>(Collections2.filter(restaurants, new Predicate<RestaurantContent>()
+        {
+            @Override
+            public boolean apply(RestaurantContent input)
+            {
+                return Iterables.any(input.getTypes(), new Predicate<String>()
+                {
+                    @Override
+                    public boolean apply(String type)
+                    {
+                        return selectedTypes.contains(type);
+                    }
+                });
+            }
+        }));
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder

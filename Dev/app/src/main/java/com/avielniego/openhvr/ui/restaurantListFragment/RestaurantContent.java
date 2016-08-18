@@ -3,7 +3,9 @@ package com.avielniego.openhvr.ui.restaurantListFragment;
 import android.location.Location;
 import android.support.annotation.NonNull;
 
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 
 public class RestaurantContent
 {
@@ -113,6 +115,11 @@ public class RestaurantContent
         temp = Double.doubleToLongBits(longitude);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
+    }
+
+    public List<String> getTypes()
+    {
+        return Arrays.asList(type.split(","));
     }
 
     public static class OpenHoursDoesNotPresented extends RuntimeException{}
