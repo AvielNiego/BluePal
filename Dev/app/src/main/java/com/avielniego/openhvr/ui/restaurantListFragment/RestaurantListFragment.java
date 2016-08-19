@@ -5,22 +5,21 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 
 import com.avielniego.openhvr.R;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -31,10 +30,6 @@ public class RestaurantListFragment extends Fragment
 
     private List<String> restaurantTypes = new ArrayList<>();
     private Set<String>  selectedTypes   = new HashSet<>();
-
-    public RestaurantListFragment()
-    {
-    }
 
     public static RestaurantListFragment newInstance()
     {
@@ -73,11 +68,10 @@ public class RestaurantListFragment extends Fragment
 
     private void setRestaurantTypes(List<RestaurantContent> restaurants)
     {
-        restaurantTypes.clear();
         Set<String> types = new HashSet<>();
         for (RestaurantContent restaurant : restaurants)
         {
-            types.addAll(Arrays.asList(restaurant.type.split(",")));
+            types.addAll(restaurant.getTypes());
         }
         restaurantTypes = new ArrayList<>(types);
     }
@@ -94,6 +88,32 @@ public class RestaurantListFragment extends Fragment
     {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.restaurant_list_menu, menu);
+        initSearchView(menu);
+    }
+
+    public void onSearchTextChanged(String newText)
+    {
+        adapter.setNameSearch(newText);
+    }
+
+    private void initSearchView(Menu menu)
+    {
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener()
+        {
+            @Override
+            public boolean onQueryTextSubmit(String query)
+            {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(final String newText)
+            {
+                onSearchTextChanged(newText);
+                return false;
+            }
+        });
     }
 
     @Override
@@ -101,32 +121,30 @@ public class RestaurantListFragment extends Fragment
     {
         switch (item.getItemId())
         {
-            case R.id.action_filter:
-                openFilterDialog();
-                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    private void openFilterDialog()
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        new AlertDialog.Builder(getContext())
-                .setTitle(R.string.filter_restaurants)
-                .setView(getRestaurantFilterDialog())
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener()
-                {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {}
-                })
-                .create().show();
+        View view = inflater.inflate(R.layout.fragment_restaurant_list, container, false);
+        initRecyclerView(view);
+        initCategoryFilter(view);
+        return view;
     }
 
-    private View getRestaurantFilterDialog()
+    private void initRecyclerView(View view)
     {
-        View view = getActivity().getLayoutInflater().inflate(R.layout.restaurant_filter_dialog, null);
-        initFilterClosedCheckbox(view);
-        view.findViewById(R.id.filter_restaurant_by_type).setOnClickListener(new View.OnClickListener()
+        RecyclerView recyclerView = ((RecyclerView) view.findViewById(R.id.list));
+        recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
+        recyclerView.setAdapter(adapter);
+    }
+
+    private void initCategoryFilter(View view)
+    {
+        view.findViewById(R.id.category_filter_combo_box).setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
@@ -134,61 +152,45 @@ public class RestaurantListFragment extends Fragment
                 openFilterTypesDialog();
             }
         });
-        return view;
-    }
-
-    private void initFilterClosedCheckbox(View view)
-    {
-        CheckBox filterClosedCheckbox = (CheckBox) view.findViewById(R.id.hide_closed_checkbox);
-        filterClosedCheckbox.setChecked(adapter.isFilterClosed());
-        filterClosedCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
-        {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b)
-            {
-                onHideClosedCheckboxCheckedChange(b);
-            }
-        });
-    }
-
-    private void onHideClosedCheckboxCheckedChange(boolean isChecked)
-    {
-        if (isChecked)
-        {
-            adapter.filterClosed();
-        }
-        else
-        {
-            adapter.showClosed();
-        }
     }
 
     private void openFilterTypesDialog()
     {
-        new AlertDialog.Builder(getContext()).setMultiChoiceItems(restaurantTypes.toArray(new String[restaurantTypes.size()]),
-                                                                  getCurrentSelectedTypes(),
-                                                                  new DialogInterface.OnMultiChoiceClickListener()
-                                                                  {
-                                                                      @Override
-                                                                      public void onClick(DialogInterface dialogInterface,
-                                                                                          int i, boolean b)
-                                                                      {
-                                                                          onTypeSelected(i, b);
-                                                                      }
-                                                                  })
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener()
-                {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i)
-                    {
-                        filterRestaurantByType();
-                    }
-                }).create().show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMultiChoiceItems(restaurantTypes.toArray(new String[restaurantTypes.size()]),
+                                    getCurrentSelectedTypes(),
+                                    new DialogInterface.OnMultiChoiceClickListener()
+                                    {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i, boolean b)
+                                        {
+                                            onTypeSelected(i, b);
+                                        }
+                                    }).setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i)
+            {
+                filterRestaurantByType();
+            }
+        }).setOnDismissListener(new DialogInterface.OnDismissListener()
+        {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface)
+            {
+                filterRestaurantByType();
+            }
+        }).create().show();
     }
 
-    private void filterRestaurantByType()
+    private boolean[] getCurrentSelectedTypes()
     {
-        adapter.setSelectedTypes(selectedTypes);
+        boolean[] selectedTypes = new boolean[restaurantTypes.size()];
+        for (int i = 0; i < restaurantTypes.size(); i++)
+        {
+            selectedTypes[i] = this.selectedTypes.contains(restaurantTypes.get(i));
+        }
+        return selectedTypes;
     }
 
     private void onTypeSelected(int typeIndex, boolean isSelected)
@@ -203,29 +205,9 @@ public class RestaurantListFragment extends Fragment
         }
     }
 
-    private boolean[] getCurrentSelectedTypes()
+    private void filterRestaurantByType()
     {
-        boolean[] selectedTypes = new boolean[restaurantTypes.size()];
-        for (int i = 0; i < restaurantTypes.size(); i++)
-        {
-            selectedTypes[i] = this.selectedTypes.contains(restaurantTypes.get(i));
-        }
-        return selectedTypes;
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
-        View view = inflater.inflate(R.layout.fragment_restaurant_list, container, false);
-        initRecyclerView(view);
-        return view;
-    }
-
-    private void initRecyclerView(View view)
-    {
-        RecyclerView recyclerView = ((RecyclerView) view.findViewById(R.id.list));
-        recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
-        recyclerView.setAdapter(adapter);
+        adapter.setSelectedTypes(selectedTypes);
     }
 
     public void setLocation(Location location)

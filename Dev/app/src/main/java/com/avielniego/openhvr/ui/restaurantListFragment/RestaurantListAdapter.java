@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.avielniego.openhvr.R;
+import com.avielniego.openhvr.ui.GuiUtils;
 import com.bumptech.glide.Glide;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
@@ -33,7 +34,7 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
     @Nullable private Location     location;
     @Nullable private RecyclerView recyclerView;
     private Set<String> selectedTypes = new HashSet<>();
-    private boolean filterClosed;
+    private String nameSearchText = "";
 
     public RestaurantListAdapter()
     {
@@ -77,17 +78,12 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
         return new ViewHolder(view);
     }
 
-    public boolean isFilterClosed()
-    {
-        return filterClosed;
-    }
-
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position)
     {
         final RestaurantContent restaurant = filteredRestaurants.get(position);
         holder.item = restaurant;
-        holder.nameTextView.setText(restaurant.name);
+        setName(holder, restaurant);
         holder.typeTextView.setText(restaurant.type);
         setAddress(holder, restaurant);
         setDistance(holder, restaurant);
@@ -102,6 +98,17 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
                 Toast.makeText(context, restaurant.getTodayOpenHours(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void setName(ViewHolder holder, RestaurantContent restaurant)
+    {
+        holder.nameTextView.setText(restaurant.name);
+        if (context != null)
+        {
+            GuiUtils.highlightTextInTextView(holder.nameTextView,
+                                             nameSearchText,
+                                             context.getResources().getColor(R.color.colorAccent));
+        }
     }
 
     private void setAddress(ViewHolder holder, RestaurantContent restaurant)
@@ -186,42 +193,32 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
 
     private void filterRestaurants()
     {
-        if (selectedTypes.isEmpty())
-        {
-            filteredRestaurants = restaurants;
-        }
-        else
-        {
-            filteredRestaurants = getFilteredByTypeRestaurants();
-        }
-
-        if (filterClosed)
-        {
-            filteredRestaurants = filterClosedRestaurants(filteredRestaurants);
-        }
+        filteredRestaurants = getFilteredByTypeRestaurants(restaurants);
+        filteredRestaurants = getFilteredByRestaurantName(filteredRestaurants);
     }
 
-    @NonNull
-    private ArrayList<RestaurantContent> filterClosedRestaurants(List<RestaurantContent> restaurants)
+    private List<RestaurantContent> getFilteredByRestaurantName(List<RestaurantContent> restaurants)
     {
+        if (nameSearchText.isEmpty())
+            return restaurants;
         return new ArrayList<>(Collections2.filter(restaurants, new Predicate<RestaurantContent>()
         {
             @Override
             public boolean apply(RestaurantContent input)
             {
-                try
-                {
-                    return input.isOpenNow();
-                } catch (RestaurantContent.OpenHoursDoesNotPresented e) {
-                    return true;
-                }
+                return input.name.toLowerCase().contains(nameSearchText.toLowerCase());
             }
         }));
     }
 
     @NonNull
-    private ArrayList<RestaurantContent> getFilteredByTypeRestaurants()
+    private List<RestaurantContent> getFilteredByTypeRestaurants(List<RestaurantContent> restaurants)
     {
+        if (selectedTypes.isEmpty())
+        {
+            return restaurants;
+        }
+
         return new ArrayList<>(Collections2.filter(restaurants, new Predicate<RestaurantContent>()
         {
             @Override
@@ -239,15 +236,9 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
         }));
     }
 
-    public void showClosed()
+    public void setNameSearch(String text)
     {
-        this.filterClosed = false;
-        updateRecyclerView();
-    }
-
-    public void filterClosed()
-    {
-        this.filterClosed = true;
+        this.nameSearchText = text;
         updateRecyclerView();
     }
 
