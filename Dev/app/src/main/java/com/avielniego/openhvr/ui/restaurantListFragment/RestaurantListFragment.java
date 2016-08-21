@@ -64,7 +64,7 @@ public class RestaurantListFragment extends Fragment
 
     private void launchRestaurantLoader()
     {
-        RestaurantLoader restaurantLoader = new RestaurantLoader(getContext(), new RestaurantLoader.RestaurantLoadListener()
+        RestaurantsLoader restaurantsLoader = new RestaurantsLoader(getContext(), new RestaurantsLoader.RestaurantLoadListener()
         {
             @Override
             public void onRestaurantLoaded(List<RestaurantContent> restaurants)
@@ -72,7 +72,7 @@ public class RestaurantListFragment extends Fragment
                 RestaurantListFragment.this.onRestaurantLoaded(restaurants);
             }
         });
-        getLoaderManager().initLoader(RestaurantLoader.RESTAURANT_LOADER_ID, null, restaurantLoader);
+        getLoaderManager().initLoader(RestaurantsLoader.RESTAURANT_LOADER_ID, null, restaurantsLoader);
     }
 
     private void onRestaurantLoaded(List<RestaurantContent> restaurants)

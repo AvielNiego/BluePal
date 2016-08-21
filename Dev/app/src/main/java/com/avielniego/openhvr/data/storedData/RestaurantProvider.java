@@ -1,6 +1,7 @@
 package com.avielniego.openhvr.data.storedData;
 
 import android.content.ContentProvider;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
@@ -14,7 +15,8 @@ import com.avielniego.openhvr.data.storedData.RestaurantContract.RestaurantEntry
 
 public class RestaurantProvider extends ContentProvider
 {
-    private static final int RESTAURANT = 100;
+    private static final int RESTAURANT       = 100;
+    private static final int RESTAURANT_BY_ID = 110;
 
     private UriMatcher uriMatcher = buildUriMatcher();
     private RestaurantDbHelper restaurantDbHelper;
@@ -45,9 +47,19 @@ public class RestaurantProvider extends ContentProvider
             case RESTAURANT:
                 return restaurantDbHelper.getReadableDatabase()
                         .query(RestaurantEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
+            case RESTAURANT_BY_ID:
+                return getRestaurantByIdCursor(uri, projection, selection, selectionArgs, sortOrder);
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
+    }
+
+    private Cursor getRestaurantByIdCursor(Uri uri, String[] projection, String selection, String[] selectionArgs,
+                                           String sortOrder)
+    {
+        return restaurantDbHelper.getReadableDatabase()
+                .query(RestaurantEntry.TABLE_NAME, projection, RestaurantEntry._ID + " = ?", new String[]{
+                        String.valueOf(ContentUris.parseId(uri))}, null, null, sortOrder);
     }
 
     @Nullable
@@ -58,6 +70,8 @@ public class RestaurantProvider extends ContentProvider
         {
             case RESTAURANT:
                 return RestaurantEntry.CONTENT_TYPE;
+            case RESTAURANT_BY_ID:
+                return RestaurantEntry.CONTENT_ITEM_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -128,6 +142,8 @@ public class RestaurantProvider extends ContentProvider
         {
             case RESTAURANT:
                 return RestaurantContract.RestaurantEntry.TABLE_NAME;
+            case RESTAURANT_BY_ID:
+                return RestaurantContract.RestaurantEntry.TABLE_NAME;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -140,9 +156,11 @@ public class RestaurantProvider extends ContentProvider
         switch (uriMatcher.match(uri))
         {
             case RESTAURANT:
-                return restaurantDbHelper.getWritableDatabase().delete(getTableName(uri),
-                                                                       selection,
-                                                                       selectionArgs);
+                return restaurantDbHelper.getWritableDatabase().delete(getTableName(uri), selection, selectionArgs);
+            case RESTAURANT_BY_ID:
+                return restaurantDbHelper.getWritableDatabase()
+                        .delete(getTableName(uri), RestaurantEntry._ID + " = ?", new String[]{
+                                String.valueOf(ContentUris.parseId(uri))});
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -153,7 +171,17 @@ public class RestaurantProvider extends ContentProvider
     {
         notifyChange(uri);
         // For getting updated rows count
-        selection = selection == null ? "1" : selection;
-        return restaurantDbHelper.getWritableDatabase().update(getTableName(uri), values, selection, selectionArgs);
+        switch (uriMatcher.match(uri))
+        {
+            case RESTAURANT:
+                selection = selection == null ? "1" : selection;
+                return restaurantDbHelper.getWritableDatabase().update(getTableName(uri), values, selection, selectionArgs);
+            case RESTAURANT_BY_ID:
+                return restaurantDbHelper.getWritableDatabase()
+                        .update(getTableName(uri), values, RestaurantEntry._ID + " = ?", new String[]{
+                                String.valueOf(ContentUris.parseId(uri))});
+            default:
+                return 0;
+        }
     }
 }
