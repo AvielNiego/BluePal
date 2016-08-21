@@ -9,7 +9,6 @@
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS"/>
     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
     <application
@@ -58,6 +57,9 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBLiCBdG3S_qqoHJJDzNSnyOvEq_aKfjX8"/>
+
+        <activity android:name=".ui.restaurantDetails.RestaurantsDetailsActivity">
+        </activity>
     </application>
 
 </manifest>

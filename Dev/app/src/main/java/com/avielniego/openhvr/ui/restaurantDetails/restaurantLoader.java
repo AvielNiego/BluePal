@@ -2,6 +2,7 @@ package com.avielniego.openhvr.ui.restaurantDetails;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -53,13 +54,13 @@ public class RestaurantLoader implements LoaderManager.LoaderCallbacks<Cursor>
     private static final int COLUMN_RESTAURANT_LATITUDE          = 16;
     private static final int COLUMN_RESTAURANT_LONGITUDE         = 17;
 
-    private long restaurantId;
+    private Uri                    restaurantUri;
     private Context                context;
     private RestaurantLoadListener restaurantLoadListener;
 
-    public RestaurantLoader(long restaurantId, Context context, RestaurantLoadListener restaurantLoadListener)
+    public RestaurantLoader(Uri restaurantUri, Context context, RestaurantLoadListener restaurantLoadListener)
     {
-        this.restaurantId = restaurantId;
+        this.restaurantUri = restaurantUri;
         this.context = context;
         this.restaurantLoadListener = restaurantLoadListener;
     }
@@ -71,7 +72,7 @@ public class RestaurantLoader implements LoaderManager.LoaderCallbacks<Cursor>
         {
             case RESTAURANT_LOADER_ID:
                 return new CursorLoader(context,
-                                        RestaurantEntry.buildRestaurantUri(restaurantId),
+                                        restaurantUri,
                                         PROJECTION,
                                         null,
                                         null,

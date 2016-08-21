@@ -2,13 +2,16 @@
     <string name="app_name" translatable="false">OpenHvr</string>
     <string name="content_authority" translatable="false">com.avielniego.restaurant</string>
     <string name="pref_location_status_key" translatable="false">server-status</string>
-    <string name="comma" translatable="false">, </string>
-    <string name="address_format" translatable="false"><xliff:g id="address">%1$s</xliff:g>, <xliff:g id="city">%2$s</xliff:g></string>
+    <string name="comma" translatable="false">,</string>
+    <string name="address_format" translatable="false"><xliff:g id="address">%1$s</xliff:g>,
+        <xliff:g id="city">%2$s</xliff:g>
+    </string>
     <string name="open">Open</string>
     <string name="closed">Closed</string>
     <string name="location_permission_title">Location Permission</string>
     <string name="location_permission_rational">Location is required to show nearby restaurants</string>
-    <string name="distance">"<xliff:g id="distance">%1$s</xliff:g>km"</string>
+    <string name="distance">"<xliff:g id="distance">%1$s</xliff:g>km"
+    </string>
     <string name="search">Search Restaurant Name</string>
     <string name="hide_closed_restaurant">Hide Closed Restaurants</string>
     <string name="filter_restaurants">Filter Restaurants</string>
@@ -16,4 +19,7 @@
     <string name="categories">Categories</string>
     <string name="current_location">Current Location</string>
     <string name="cancel_custom_location_filter">Cancel Custom Location Filter</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

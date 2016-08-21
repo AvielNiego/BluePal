@@ -1,6 +1,7 @@
 package com.avielniego.openhvr.ui.restaurantListFragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,10 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.avielniego.openhvr.R;
+import com.avielniego.openhvr.data.storedData.RestaurantContract.RestaurantEntry;
 import com.avielniego.openhvr.ui.GuiUtils;
+import com.avielniego.openhvr.ui.restaurantDetails.RestaurantsDetailsActivity;
 import com.bumptech.glide.Glide;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
@@ -31,10 +33,10 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
     private List<RestaurantContent> filteredRestaurants = new ArrayList<>();
     private List<RestaurantContent> restaurants         = new ArrayList<>();
     @Nullable private Context      context;
-    @Nullable private Location     location;
+    private Location     location;
     @Nullable private RecyclerView recyclerView;
-    private Set<String> selectedTypes = new HashSet<>();
-    private String nameSearchText = "";
+    private Set<String> selectedTypes  = new HashSet<>();
+    private String      nameSearchText = "";
 
     public RestaurantListAdapter()
     {
@@ -95,9 +97,21 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
             @Override
             public void onClick(View view)
             {
-                Toast.makeText(context, restaurant.getTodayOpenHours(), Toast.LENGTH_SHORT).show();
+                onRestaurantItemClicked(restaurant);
             }
         });
+    }
+
+    private void onRestaurantItemClicked(RestaurantContent restaurant)
+    {
+        if (context == null)
+            return;
+
+        Intent intent = new Intent(context, RestaurantsDetailsActivity.class)
+                .setData(RestaurantEntry.buildRestaurantUri(restaurant.id))
+                .putExtra(RestaurantsDetailsActivity.LAT_ARG, location.getLatitude())
+                .putExtra(RestaurantsDetailsActivity.LONG_ARG, location.getLongitude());
+        context.startActivity(intent);
     }
 
     private void setName(ViewHolder holder, RestaurantContent restaurant)

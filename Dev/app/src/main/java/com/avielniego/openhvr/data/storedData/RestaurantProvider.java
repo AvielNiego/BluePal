@@ -27,6 +27,7 @@ public class RestaurantProvider extends ContentProvider
 
         String contentAuthority = RestaurantContract.CONTENT_AUTHORITY;
         uriMatcher.addURI(contentAuthority, RestaurantContract.PATH_RESTAURANT, RESTAURANT);
+        uriMatcher.addURI(contentAuthority, RestaurantContract.PATH_RESTAURANT + "/#", RESTAURANT_BY_ID);
 
         return uriMatcher;
     }
@@ -48,14 +49,13 @@ public class RestaurantProvider extends ContentProvider
                 return restaurantDbHelper.getReadableDatabase()
                         .query(RestaurantEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
             case RESTAURANT_BY_ID:
-                return getRestaurantByIdCursor(uri, projection, selection, selectionArgs, sortOrder);
+                return getRestaurantByIdCursor(uri, projection, sortOrder);
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
     }
 
-    private Cursor getRestaurantByIdCursor(Uri uri, String[] projection, String selection, String[] selectionArgs,
-                                           String sortOrder)
+    private Cursor getRestaurantByIdCursor(Uri uri, String[] projection, String sortOrder)
     {
         return restaurantDbHelper.getReadableDatabase()
                 .query(RestaurantEntry.TABLE_NAME, projection, RestaurantEntry._ID + " = ?", new String[]{
