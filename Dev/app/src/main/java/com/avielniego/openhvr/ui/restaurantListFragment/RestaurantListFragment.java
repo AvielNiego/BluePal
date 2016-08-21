@@ -1,6 +1,8 @@
 package com.avielniego.openhvr.ui.restaurantListFragment;
 
+import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,8 +18,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.avielniego.openhvr.R;
+import com.avielniego.openhvr.ui.LocationUtils;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -26,10 +34,17 @@ import java.util.Set;
 
 public class RestaurantListFragment extends Fragment
 {
+    private static final String LOG_TAG = RestaurantListFragment.class.getSimpleName();
+
+    private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 0;
+
     private RestaurantListAdapter adapter = new RestaurantListAdapter();
 
     private List<String> restaurantTypes = new ArrayList<>();
     private Set<String>  selectedTypes   = new HashSet<>();
+    private Location currentLocation;
+    private TextView locationFilterView;
+    @Nullable private Place chosenPlace;
 
     public static RestaurantListFragment newInstance()
     {
@@ -91,11 +106,6 @@ public class RestaurantListFragment extends Fragment
         initSearchView(menu);
     }
 
-    public void onSearchTextChanged(String newText)
-    {
-        adapter.setNameSearch(newText);
-    }
-
     private void initSearchView(Menu menu)
     {
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
@@ -110,7 +120,7 @@ public class RestaurantListFragment extends Fragment
             @Override
             public boolean onQueryTextChange(final String newText)
             {
-                onSearchTextChanged(newText);
+                adapter.setNameSearch(newText);
                 return false;
             }
         });
@@ -121,6 +131,11 @@ public class RestaurantListFragment extends Fragment
     {
         switch (item.getItemId())
         {
+            case R.id.action_nav:
+                LocationUtils.startNavigationActivity(getContext(),
+                                                      currentLocation.toString(),
+                                                      currentLocation.getLatitude(),
+                                                      currentLocation.getLongitude());
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -132,7 +147,95 @@ public class RestaurantListFragment extends Fragment
         View view = inflater.inflate(R.layout.fragment_restaurant_list, container, false);
         initRecyclerView(view);
         initCategoryFilter(view);
+        initLocationFilter(view);
+        initCancelCustomLocationFilter(view);
         return view;
+    }
+
+    private void initCancelCustomLocationFilter(View view)
+    {
+        view.findViewById(R.id.cancel_location_filter).setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                onCancelCustomLocationFilter();
+            }
+        });
+    }
+
+    private void onCancelCustomLocationFilter()
+    {
+        chosenPlace = null;
+        onLocationReceived(currentLocation);
+    }
+
+    private void initLocationFilter(View view)
+    {
+
+        locationFilterView = ((TextView) view.findViewById(R.id.location_filter));
+        enableLocationFilter();
+    }
+
+    private void enableLocationFilter()
+    {
+        locationFilterView.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                tryLaunchingPlaceAutocomplete();
+            }
+        });
+    }
+
+    private void disableLocationFilter()
+    {
+        locationFilterView.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+            }
+        });
+    }
+
+    private void tryLaunchingPlaceAutocomplete()
+    {
+        try
+        {
+            Intent intent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY).build(getActivity());
+            disableLocationFilter();
+            startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
+        } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e)
+        {
+            // TODO: Handle the error.
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE)
+        {
+            onPlaceAutocompleteReturned(resultCode, data);
+        }
+    }
+
+    private void onPlaceAutocompleteReturned(int resultCode, Intent data)
+    {
+        enableLocationFilter();
+        if (resultCode == Activity.RESULT_OK)
+        {
+            onPlaceAutocompleteResultOk(data);
+        }
+    }
+
+    private void onPlaceAutocompleteResultOk(Intent data)
+    {
+        chosenPlace = PlaceAutocomplete.getPlace(getContext(), data);
+        adapter.setLocation(chosenPlace.getLatLng().latitude, chosenPlace.getLatLng().longitude);
+        locationFilterView.setText(chosenPlace.getName());
     }
 
     private void initRecyclerView(View view)
@@ -210,8 +313,14 @@ public class RestaurantListFragment extends Fragment
         adapter.setSelectedTypes(selectedTypes);
     }
 
-    public void setLocation(Location location)
+    public void onLocationReceived(Location location)
     {
+        this.currentLocation = location;
+
+        if (chosenPlace != null)
+            return;
         adapter.setLocation(location);
+        if (locationFilterView != null)
+            locationFilterView.setText(R.string.current_location);
     }
 }

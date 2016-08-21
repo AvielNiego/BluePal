@@ -242,6 +242,14 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
         updateRecyclerView();
     }
 
+    public void setLocation(double latitude, double longitude)
+    {
+        Location location = new Location("");
+        location.setLatitude(latitude);
+        location.setLongitude(longitude);
+        setLocation(location);
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder
     {
         public final View      view;

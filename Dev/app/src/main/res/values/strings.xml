@@ -14,4 +14,6 @@
     <string name="filter_restaurants">Filter Restaurants</string>
     <string name="filter_restaurant_types">Filter Restaurant Types</string>
     <string name="categories">Categories</string>
+    <string name="current_location">Current Location</string>
+    <string name="cancel_custom_location_filter">Cancel Custom Location Filter</string>
 </resources>

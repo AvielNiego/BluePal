@@ -16,19 +16,44 @@
         card_view:cardCornerRadius="0dp"
         card_view:cardElevation="1dp"
         card_view:cardUseCompatPadding="true">
-        <LinearLayout android:layout_width="match_parent"
+        <LinearLayout android:layout_width="wrap_content"
                       android:layout_height="match_parent"
                       android:orientation="horizontal">
-            <TextView android:layout_width="wrap_content"
+            <TextView android:id="@+id/category_filter_combo_box"
+                      android:layout_width="0dp"
+                      android:layout_weight="3.3"
                       android:layout_height="match_parent"
-                      android:id="@+id/category_filter_combo_box"
-                      android:gravity="center"
                       android:background="?attr/selectableItemBackground"
                       android:clickable="true"
-                      android:textSize="22sp"
-                      android:padding="5dp"
                       android:drawableRight="@drawable/ic_extend_list"
-                      android:text="@string/categories"/>
+                      android:gravity="center"
+                      android:padding="5dp"
+                      android:text="@string/categories"
+                      android:textSize="20sp"
+                      android:singleLine="true"
+                      android:ellipsize="end"/>
+
+            <TextView android:id="@+id/location_filter"
+                      android:layout_weight="3"
+                      android:layout_width="0dp"
+                      android:layout_height="match_parent"
+                      android:background="?attr/selectableItemBackground"
+                      android:clickable="true"
+                      android:drawableRight="@drawable/ic_extend_list"
+                      android:gravity="center"
+                      android:padding="5dp"
+                      android:text="@string/current_location"
+                      android:textSize="20sp"
+                      android:singleLine="true"
+                      android:ellipsize="end"/>
+            <ImageView android:id="@+id/cancel_location_filter"
+                       android:layout_width="0dp"
+                       android:layout_weight="1"
+                       android:layout_height="match_parent"
+                       android:background="?attr/selectableItemBackgroundBorderless"
+                       android:clickable="true"
+                       android:contentDescription="@string/cancel_custom_location_filter"
+                       android:src="@drawable/ic_cancel"/>
         </LinearLayout>
     </android.support.v7.widget.CardView>
 

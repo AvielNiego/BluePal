@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity
 
     private void onLocationReceived(Location location)
     {
-        restaurantListFragment.setLocation(location);
+        restaurantListFragment.onLocationReceived(location);
     }
 
     @Override

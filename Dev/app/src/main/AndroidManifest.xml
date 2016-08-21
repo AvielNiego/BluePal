@@ -54,6 +54,10 @@
             android:authorities="@string/content_authority"
             android:exported="false"
             android:syncable="true"/>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBLiCBdG3S_qqoHJJDzNSnyOvEq_aKfjX8"/>
     </application>
 
 </manifest>

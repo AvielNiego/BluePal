@@ -43,12 +43,12 @@ public class RestaurantContent
         String todayOpenTime = getTodayOpenHours();
 
         String openTime = todayOpenTime.split("-")[0];
-        int openHour = Integer.valueOf(openTime.split(":")[0]);
-        int openMinuet = Integer.valueOf(openTime.split(":")[1]);
+        int openHour = Integer.valueOf(openTime.split(":")[0].trim());
+        int openMinuet = Integer.valueOf(openTime.split(":")[1].trim());
 
         String closeTime = todayOpenTime.split("-")[1];
-        int closeHour = Integer.valueOf(closeTime.split(":")[0]);
-        int closeMinuet = Integer.valueOf(closeTime.split(":")[1]);
+        int closeHour = Integer.valueOf(closeTime.split(":")[0].trim());
+        int closeMinuet = Integer.valueOf(closeTime.split(":")[1].trim());
 
         int nowHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
         int nowMinuet = Calendar.getInstance().get(Calendar.MINUTE);
