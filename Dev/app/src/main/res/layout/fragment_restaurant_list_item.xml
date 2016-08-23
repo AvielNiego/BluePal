@@ -4,7 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="83dp"
     android:layout_margin="3dp"
     card_view:cardCornerRadius="4dp"
     card_view:cardElevation="1dp"
@@ -16,7 +16,8 @@
                   android:layout_height="wrap_content"
                   android:gravity="right"
                   android:orientation="horizontal"
-                  android:padding="5dp">
+                  android:padding="5dp"
+                  android:baselineAligned="false">
 
         <LinearLayout android:layout_width="0dp"
                       android:layout_height="wrap_content"
@@ -42,7 +43,9 @@
                     android:layout_weight="4.5"
                     android:alpha="0.84"
                     android:textAppearance="?android:textAppearance"
-                    android:textSize="22sp"/>
+                    android:textSize="22sp"
+                    android:singleLine="true"
+                    android:ellipsize="end"/>
 
             </LinearLayout>
 
@@ -71,7 +74,7 @@
                 <TextView android:id="@+id/restaurant_address"
                           android:layout_width="0dp"
                           android:layout_weight="3"
-                          android:layout_height="wrap_content"
+                          android:layout_height="match_parent"
                           android:alpha="0.54"
                           android:textAppearance="?android:textAppearance"
                           android:textSize="14sp"/>

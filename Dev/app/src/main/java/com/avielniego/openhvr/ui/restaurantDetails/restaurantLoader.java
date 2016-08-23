@@ -115,7 +115,7 @@ public class RestaurantLoader implements LoaderManager.LoaderCallbacks<Cursor>
         content.weekOpenHours = data.getString(COLUMN_RESTAURANT_WEEK_OPEN_HOURS);
         content.fridayOpenHours = data.getString(COLUMN_RESTAURANT_FRIDAY_OPEN_HOURS);
         content.satOpenHours = data.getString(COLUMN_RESTAURANT_SAT_OPEN_HOURS);
-        content.isKosher = data.getString(COLUMN_RESTAURANT_IS_KOSHER);
+        content.kosher = data.getString(COLUMN_RESTAURANT_IS_KOSHER);
         content.handicap = data.getString(COLUMN_RESTAURANT_HANDICAP);
         content.website = data.getString(COLUMN_RESTAURANT_WEBSITE);
         content.latitude = data.getDouble(COLUMN_RESTAURANT_LATITUDE);
