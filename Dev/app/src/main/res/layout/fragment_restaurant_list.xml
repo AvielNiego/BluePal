@@ -49,6 +49,7 @@
                       android:ellipsize="end"/>
             <ImageView android:id="@+id/cancel_location_filter"
                        android:layout_width="0dp"
+                       android:visibility="gone"
                        android:layout_weight="1"
                        android:layout_height="match_parent"
                        android:background="?attr/selectableItemBackgroundBorderless"

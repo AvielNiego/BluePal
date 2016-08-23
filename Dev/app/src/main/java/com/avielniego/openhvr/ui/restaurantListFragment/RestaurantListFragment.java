@@ -45,6 +45,7 @@ public class RestaurantListFragment extends Fragment
     private Location currentLocation;
     private TextView locationFilterView;
     @Nullable private Place chosenPlace;
+    private View cancelLocationFilter;
 
     public static RestaurantListFragment newInstance()
     {
@@ -154,7 +155,8 @@ public class RestaurantListFragment extends Fragment
 
     private void initCancelCustomLocationFilter(View view)
     {
-        view.findViewById(R.id.cancel_location_filter).setOnClickListener(new View.OnClickListener()
+        cancelLocationFilter = view.findViewById(R.id.cancel_location_filter);
+        cancelLocationFilter.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
@@ -236,6 +238,7 @@ public class RestaurantListFragment extends Fragment
         chosenPlace = PlaceAutocomplete.getPlace(getContext(), data);
         adapter.setLocation(chosenPlace.getLatLng().latitude, chosenPlace.getLatLng().longitude);
         locationFilterView.setText(chosenPlace.getName());
+        cancelLocationFilter.setVisibility(View.VISIBLE);
     }
 
     private void initRecyclerView(View view)
@@ -322,5 +325,7 @@ public class RestaurantListFragment extends Fragment
         adapter.setLocation(location);
         if (locationFilterView != null)
             locationFilterView.setText(R.string.current_location);
+        if (cancelLocationFilter != null)
+            cancelLocationFilter.setVisibility(View.GONE);
     }
 }
