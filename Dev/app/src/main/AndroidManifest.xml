@@ -59,6 +59,9 @@
             android:value="AIzaSyBLiCBdG3S_qqoHJJDzNSnyOvEq_aKfjX8"/>
 
         <activity android:name=".ui.restaurantDetails.RestaurantsDetailsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.MainActivity"/>
         </activity>
     </application>
 

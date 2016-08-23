@@ -1,7 +1,6 @@
 package com.avielniego.openhvr.ui.restaurantListFragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.avielniego.openhvr.R;
-import com.avielniego.openhvr.data.storedData.RestaurantContract.RestaurantEntry;
 import com.avielniego.openhvr.ui.GuiUtils;
 import com.avielniego.openhvr.ui.restaurantDetails.RestaurantsDetailsActivity;
 import com.bumptech.glide.Glide;
@@ -87,7 +85,7 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
         holder.item = restaurant;
         setName(holder, restaurant);
         holder.typeTextView.setText(restaurant.type);
-        setAddress(holder, restaurant);
+        holder.addressTextView.setText(restaurant.city);
         setDistance(holder, restaurant);
         setIsOpenTextViewValue(holder, restaurant);
         Glide.with(context).load(restaurant.image).placeholder(R.mipmap.ic_launcher).into(holder.restaurantImageView);
@@ -106,12 +104,7 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
     {
         if (context == null)
             return;
-
-        Intent intent = new Intent(context, RestaurantsDetailsActivity.class)
-                .setData(RestaurantEntry.buildRestaurantUri(restaurant.id))
-                .putExtra(RestaurantsDetailsActivity.LAT_ARG, location.getLatitude())
-                .putExtra(RestaurantsDetailsActivity.LONG_ARG, location.getLongitude());
-        context.startActivity(intent);
+        context.startActivity(RestaurantsDetailsActivity.getIntent(context, location, restaurant.id));
     }
 
     private void setName(ViewHolder holder, RestaurantContent restaurant)
@@ -122,14 +115,6 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
             GuiUtils.highlightTextInTextView(holder.nameTextView,
                                              nameSearchText,
                                              context.getResources().getColor(R.color.colorAccent));
-        }
-    }
-
-    private void setAddress(ViewHolder holder, RestaurantContent restaurant)
-    {
-        if (context != null)
-        {
-            holder.addressTextView.setText(context.getString(R.string.address_format, restaurant.address, restaurant.city));
         }
     }
 

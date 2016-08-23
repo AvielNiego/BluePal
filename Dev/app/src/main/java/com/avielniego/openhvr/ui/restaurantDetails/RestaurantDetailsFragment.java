@@ -1,10 +1,12 @@
 package com.avielniego.openhvr.ui.restaurantDetails;
 
+import android.content.Intent;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.avielniego.openhvr.R;
+import com.avielniego.openhvr.ui.LocationUtils;
 import com.avielniego.openhvr.ui.restaurantListFragment.RestaurantContent;
 import com.bumptech.glide.Glide;
 
@@ -22,9 +25,9 @@ public class RestaurantDetailsFragment extends Fragment
     private static final String RESTAURANT_ID_ARG = "RESTAURANT_ID_ARG";
     private static final String LOCATION_ARG      = "LOCATION_ARG";
 
-    private Uri restaurantUri;
+    private Uri        restaurantUri;
     private ViewHolder viewHolder;
-    private Location location;
+    private Location   location;
 
     public static RestaurantDetailsFragment newInstance(Uri restaurantUri, Location location)
     {
@@ -64,34 +67,97 @@ public class RestaurantDetailsFragment extends Fragment
     public void onActivityCreated(@Nullable Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
-        RestaurantLoader loader = new RestaurantLoader(restaurantUri, getContext(), new RestaurantLoader.RestaurantLoadListener()
-        {
-            @Override
-            public void onRestaurantLoaded(RestaurantContent restaurant)
-            {
-                RestaurantDetailsFragment.this.onRestaurantLoaded(restaurant);
-            }
-        });
+        RestaurantLoader loader = new RestaurantLoader(restaurantUri,
+                                                       getContext(),
+                                                       new RestaurantLoader.RestaurantLoadListener()
+                                                       {
+                                                           @Override
+                                                           public void onRestaurantLoaded(RestaurantContent restaurant)
+                                                           {
+                                                               RestaurantDetailsFragment.this.onRestaurantLoaded(restaurant);
+                                                           }
+                                                       });
         getLoaderManager().initLoader(DETAIL_LOADER_ID, null, loader);
     }
 
-    private void onRestaurantLoaded(RestaurantContent restaurant)
+    private void onRestaurantLoaded(final RestaurantContent restaurant)
     {
         viewHolder.item = restaurant;
-        viewHolder.nameTextView.setText(restaurant.name);
+        setName(restaurant);
         viewHolder.typeTextView.setText(restaurant.type);
+        setPhone(restaurant);
+        setWebsite(restaurant);
+        viewHolder.weekOpenHours.setText(restaurant.weekOpenHours);
+        viewHolder.fridayOpenHours.setText(restaurant.fridayOpenHours);
+        viewHolder.saturdayOpenHours.setText(restaurant.satOpenHours);
+        setKosher(restaurant);
+        viewHolder.handicap.setText(restaurant.handicap);
         setAddress(viewHolder, restaurant);
         setDistance(viewHolder, restaurant);
-        setIsOpenTextViewValue(viewHolder, restaurant);
-        Glide.with(getContext()).load(restaurant.image).placeholder(R.mipmap.ic_launcher).into(viewHolder.restaurantImageView);
+        Glide.with(getContext()).load(restaurant.image).placeholder(R.mipmap.ic_launcher)
+                .into(viewHolder.restaurantImageView);
     }
 
-    private void setAddress(ViewHolder holder, RestaurantContent restaurant)
+    private void setKosher(RestaurantContent restaurant)
     {
-        if (getContext() != null)
+        viewHolder.kosher.setText(restaurant.kosher.isEmpty() ? getContext().getString(R.string.not_kosher): restaurant.kosher);
+    }
+
+    private void setWebsite(final RestaurantContent restaurant)
+    {
+        viewHolder.goToWebsiteAction.setOnClickListener(new View.OnClickListener()
         {
-            holder.addressTextView.setText(getContext().getString(R.string.address_format, restaurant.address, restaurant.city));
+            @Override
+            public void onClick(View view)
+            {
+                sandToWebsite(restaurant);
+            }
+        });
+    }
+
+    private void sandToWebsite(RestaurantContent restaurant)
+    {
+        String url = restaurant.website;
+        if (!url.startsWith("http://") && !url.startsWith("https://"))
+            url = "http://" + url;
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+    }
+
+    private void setPhone(final RestaurantContent restaurant)
+    {
+        viewHolder.phoneTextView.setText(restaurant.phone);
+        viewHolder.callAction.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + restaurant.phone)));
+            }
+        });
+    }
+
+    private void setName(RestaurantContent restaurant)
+    {
+        if (((AppCompatActivity) getActivity()).getSupportActionBar() != null)
+        {
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(restaurant.name);
         }
+    }
+
+    private void setAddress(ViewHolder holder, final RestaurantContent restaurant)
+    {
+        holder.addressTextView.setText(getContext().getString(R.string.address_format, restaurant.address, restaurant.city));
+
+        viewHolder.navigateAction.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                LocationUtils.startNavigationActivity(getContext(),
+                                                      restaurant.address + ", " + restaurant.city,
+                                                      restaurant.getLocation());
+            }
+        });
     }
 
     private void setDistance(ViewHolder holder, RestaurantContent restaurant)
@@ -103,46 +169,22 @@ public class RestaurantDetailsFragment extends Fragment
         }
     }
 
-    private void setIsOpenTextViewValue(ViewHolder holder, RestaurantContent restaurant)
-    {
-        try
-        {
-            setIsOpenState(holder, restaurant);
-        } catch (RestaurantContent.OpenHoursDoesNotPresented e)
-        {
-            holder.isOpenTextView.setText("");
-        }
-    }
-
-    private void setIsOpenState(ViewHolder holder, RestaurantContent restaurant)
-    {
-        if (restaurant.isOpenNow())
-            setOpenedStyle(holder);
-        else
-            setClosedStyle(holder);
-    }
-
-    private void setClosedStyle(ViewHolder holder)
-    {
-        holder.isOpenTextView.setText(R.string.closed);
-        holder.isOpenTextView.setTextAppearance(getContext(), R.style.closedTextStyle);
-    }
-
-    private void setOpenedStyle(ViewHolder holder)
-    {
-        holder.isOpenTextView.setText(R.string.open);
-        holder.isOpenTextView.setTextAppearance(getContext(), R.style.openTextStyle);
-    }
-
-
     public class ViewHolder
     {
         public final View      view;
+        public final View      goToWebsiteAction;
+        public final View      callAction;
+        public final View      navigateAction;
         public final TextView  nameTextView;
         public final TextView  addressTextView;
         public final TextView  typeTextView;
         public final TextView  distanceTextView;
-        public final TextView  isOpenTextView;
+        public final TextView  phoneTextView;
+        public final TextView  weekOpenHours;
+        public final TextView  fridayOpenHours;
+        public final TextView  saturdayOpenHours;
+        public final TextView  kosher;
+        public final TextView  handicap;
         public final ImageView restaurantImageView;
 
         public RestaurantContent item;
@@ -154,7 +196,15 @@ public class RestaurantDetailsFragment extends Fragment
             addressTextView = (TextView) view.findViewById(R.id.restaurant_address);
             typeTextView = (TextView) view.findViewById(R.id.restaurant_type);
             distanceTextView = (TextView) view.findViewById(R.id.restaurant_distance);
-            isOpenTextView = (TextView) view.findViewById(R.id.is_open);
+            phoneTextView = (TextView) view.findViewById(R.id.phone_number_text_view);
+            weekOpenHours = (TextView) view.findViewById(R.id.week_open_hours);
+            fridayOpenHours = (TextView) view.findViewById(R.id.friday_open_hours);
+            saturdayOpenHours = (TextView) view.findViewById(R.id.saturday_open_hours);
+            handicap = (TextView) view.findViewById(R.id.handicap);
+            kosher = (TextView) view.findViewById(R.id.kosher);
+            goToWebsiteAction = view.findViewById(R.id.website_container);
+            callAction = view.findViewById(R.id.phone_number_container);
+            navigateAction = view.findViewById(R.id.navigate_container);
             restaurantImageView = ((ImageView) view.findViewById(R.id.restaurant_image));
         }
     }

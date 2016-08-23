@@ -22,7 +22,7 @@ public class RestaurantContent
     public String weekOpenHours   = "";
     public String fridayOpenHours = "";
     public String satOpenHours    = "";
-    public String isKosher        = "";
+    public String kosher          = "";
     public String handicap        = "";
     public String website         = "";
     public double latitude;
