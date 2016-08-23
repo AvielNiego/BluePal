@@ -84,6 +84,7 @@ public class RestaurantDetailsFragment extends Fragment
     {
         viewHolder.item = restaurant;
         setName(restaurant);
+        viewHolder.descriptionTextView.setText(restaurant.desc);
         viewHolder.typeTextView.setText(restaurant.type);
         setPhone(restaurant);
         setWebsite(restaurant);
@@ -178,6 +179,7 @@ public class RestaurantDetailsFragment extends Fragment
         public final TextView  nameTextView;
         public final TextView  addressTextView;
         public final TextView  typeTextView;
+        public final TextView  descriptionTextView;
         public final TextView  distanceTextView;
         public final TextView  phoneTextView;
         public final TextView  weekOpenHours;
@@ -195,6 +197,7 @@ public class RestaurantDetailsFragment extends Fragment
             nameTextView = (TextView) view.findViewById(R.id.restaurant_name);
             addressTextView = (TextView) view.findViewById(R.id.restaurant_address);
             typeTextView = (TextView) view.findViewById(R.id.restaurant_type);
+            descriptionTextView = (TextView) view.findViewById(R.id.restaurant_descr);
             distanceTextView = (TextView) view.findViewById(R.id.restaurant_distance);
             phoneTextView = (TextView) view.findViewById(R.id.phone_number_text_view);
             weekOpenHours = (TextView) view.findViewById(R.id.week_open_hours);
