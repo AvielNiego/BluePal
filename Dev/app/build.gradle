@@ -6,6 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.avielniego.openhvr"
+        vectorDrawables.useSupportLibrary = true
         minSdkVersion 11
         targetSdkVersion 24
         versionCode 1

@@ -1,65 +1,62 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="match_parent" android:layout_height="match_parent"
-            tools:context="com.avielniego.openhvr.ui.restaurantDetails.RestaurantDetailsFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.avielniego.openhvr.ui.restaurantDetails.RestaurantDetailsFragment">
 
-    <LinearLayout android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:orientation="vertical"
+        android:padding="5dp">
 
-        <LinearLayout android:layout_width="match_parent"
-                      android:layout_height="wrap_content"
-                      android:baselineAligned="false"
-                      android:gravity="right"
-                      android:orientation="horizontal"
-                      android:padding="5dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:gravity="right"
+            android:orientation="horizontal">
 
-            <LinearLayout android:layout_width="0dp"
-                          android:layout_height="wrap_content"
-                          android:layout_weight="3"
-                          android:gravity="right"
-                          android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:gravity="right"
+                android:orientation="vertical">
 
-                <TextView android:id="@+id/restaurant_descr"
-                          android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:alpha="0.84"
-                          android:textAppearance="?android:textAppearance"
-                          android:textSize="18sp"/>
+                <TextView
+                    android:id="@+id/restaurant_descr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:alpha="0.84"
+                    android:textAppearance="?android:textAppearance"
+                    android:textSize="18sp" />
 
-                <TextView android:id="@+id/restaurant_type"
-                          android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:alpha="0.84"
-                          android:textAppearance="?android:textAppearance"
-                          android:textSize="18sp"/>
+                <TextView
+                    android:id="@+id/restaurant_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:alpha="0.84"
+                    android:textAppearance="?android:textAppearance"
+                    android:textSize="18sp" />
 
-                <LinearLayout android:layout_width="match_parent"
-                              android:layout_height="wrap_content"
-                              android:gravity="right"
-                              android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:orientation="horizontal">
 
-                    <TextView android:id="@+id/restaurant_distance"
-                              android:layout_width="wrap_content"
-                              android:layout_height="wrap_content"
-                              android:alpha="0.54"
-                              android:textAppearance="?android:textAppearance"
-                              android:textSize="14sp"/>
+                    <TextView
+                        android:id="@+id/restaurant_distance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:alpha="0.54"
+                        android:textAppearance="?android:textAppearance"
+                        android:textSize="14sp" />
 
-                    <TextView android:layout_width="wrap_content"
-                              android:layout_height="wrap_content"
-                              android:alpha="0.54"
-                              android:text="@string/circle_separator"
-                              android:textAppearance="?android:textAppearance"
-                              android:textSize="14sp"/>
-
-                    <TextView android:id="@+id/restaurant_address"
-                              android:layout_width="wrap_content"
-                              android:layout_height="wrap_content"
-                              android:alpha="0.54"
-                              android:textAppearance="?android:textAppearance"
-                              android:textSize="14sp"/>
                 </LinearLayout>
 
             </LinearLayout>
@@ -67,111 +64,306 @@
             <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="70dp"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:padding="5dp">
 
                 <ImageView
                     android:id="@+id/restaurant_image"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent" />
             </FrameLayout>
         </LinearLayout>
 
-        <android.support.v7.widget.CardView android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            card_view:cardCornerRadius="0dp"
-                                            card_view:cardElevation="1dp"
-                                            card_view:cardUseCompatPadding="true">
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            card_view:cardCornerRadius="0dp"
+            card_view:cardElevation="1dp"
+            card_view:cardUseCompatPadding="true">
 
-            <LinearLayout android:layout_width="match_parent"
-                          android:layout_height="wrap_content"
-                          android:orientation="horizontal"
-                          android:padding="5dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                android:padding="5dp">
 
-                <LinearLayout android:id="@+id/phone_number_container"
-                              android:layout_width="0dp"
-                              android:layout_height="70dp"
-                              android:layout_weight="1"
-                              android:background="?attr/selectableItemBackgroundBorderless"
-                              android:clickable="true"
-                              android:orientation="vertical">
+                <LinearLayout
+                    android:id="@+id/phone_number_container"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:orientation="vertical">
 
-                    <ImageView android:layout_width="match_parent"
-                               android:layout_height="53dp"
-                               android:alpha="0.87"
-                               android:src="@drawable/ic_call"/>
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:alpha="0.87"
+                        android:contentDescription="@string/call_to_restaurant"
+                        android:tint="@color/colorPrimary"
+                        app:srcCompat="@drawable/ic_call" />
 
-                    <TextView android:id="@+id/phone_number_text_view"
-                              android:layout_width="match_parent"
-                              android:layout_height="17dp"
-                              android:gravity="center"
-                              android:textSize="12sp"/>
-
-                </LinearLayout>
-
-                <LinearLayout android:id="@+id/navigate_container"
-                              android:layout_width="0dp"
-                              android:layout_height="70dp"
-                              android:layout_weight="1"
-                              android:background="?attr/selectableItemBackgroundBorderless"
-                              android:clickable="true"
-                              android:orientation="vertical">
-
-                    <ImageView android:layout_width="match_parent"
-                               android:layout_height="53dp"
-                               android:alpha="0.87"
-                               android:src="@drawable/ic_navigate"/>
-
-                    <TextView android:layout_width="match_parent"
-                              android:layout_height="17dp"
-                              android:gravity="center"
-                              android:text="@string/navigate"
-                              android:textSize="12sp"/>
+                    <TextView
+                        android:id="@+id/phone_number_text_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="17dp"
+                        android:gravity="center"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="12sp" />
 
                 </LinearLayout>
 
-                <LinearLayout android:id="@+id/website_container"
-                              android:layout_width="0dp"
-                              android:layout_height="70dp"
-                              android:layout_weight="1"
-                              android:background="?attr/selectableItemBackgroundBorderless"
-                              android:clickable="true"
-                              android:orientation="vertical">
+                <LinearLayout
+                    android:id="@+id/navigate_container"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:orientation="vertical">
 
-                    <ImageView android:layout_width="match_parent"
-                               android:layout_height="53dp"
-                               android:alpha="0.87"
-                               android:src="@drawable/ic_website"/>
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:alpha="0.87"
+                        android:contentDescription="@string/navigate_to_restaurant"
+                        android:tint="@color/colorPrimary"
+                        app:srcCompat="@drawable/ic_navigate" />
 
-                    <TextView android:layout_width="match_parent"
-                              android:layout_height="17dp"
-                              android:gravity="center"
-                              android:text="@string/website"
-                              android:textSize="12sp"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="17dp"
+                        android:gravity="center"
+                        android:text="@string/navigate"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/website_container"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:alpha="0.87"
+                        android:contentDescription="@string/go_to_restaurant_s_website"
+                        android:tint="@color/colorPrimary"
+                        app:srcCompat="@drawable/ic_website_vec" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="17dp"
+                        android:gravity="center"
+                        android:text="@string/website"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="12sp" />
 
                 </LinearLayout>
 
             </LinearLayout>
         </android.support.v7.widget.CardView>
 
-        <TextView android:id="@+id/week_open_hours"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"/>
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            card_view:cardCornerRadius="0dp"
+            card_view:cardElevation="1dp"
+            card_view:cardUseCompatPadding="true">
 
-        <TextView android:id="@+id/friday_open_hours"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:orientation="vertical"
+                android:padding="5dp">
 
-        <TextView android:id="@+id/saturday_open_hours"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:orientation="horizontal"
+                    android:paddingBottom="7dp">
 
-        <TextView android:id="@+id/kosher"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"/>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:orientation="horizontal">
 
-        <TextView android:id="@+id/handicap"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"/>
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/week_open_hours"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:alpha="0.87"
+                                android:textAppearance="?android:textAppearance"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/friday_open_hours"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:alpha="0.87"
+                                android:textAppearance="?android:textAppearance"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/saturday_open_hours"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:alpha="0.87"
+                                android:textAppearance="?android:textAppearance"
+                                android:textSize="16sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:alpha="0.87"
+                                android:paddingLeft="2dp"
+                                android:text="@string/sunday_to_thursday"
+                                android:textAppearance="?android:textAppearance"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:alpha="0.87"
+                                android:paddingLeft="2dp"
+                                android:text="@string/friday"
+                                android:textAppearance="?android:textAppearance"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:alpha="0.87"
+                                android:paddingLeft="2dp"
+                                android:text="@string/saturday"
+                                android:textAppearance="?android:textAppearance"
+                                android:textSize="16sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:alpha="0.87"
+                        android:contentDescription="@string/navigate_to_restaurant"
+                        android:scaleType="fitStart"
+                        android:tint="@color/colorPrimary"
+                        app:srcCompat="@drawable/ic_open_hours"
+                        android:paddingLeft="3dp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:orientation="horizontal"
+                    android:paddingBottom="7dp">
+
+                    <TextView
+                        android:id="@+id/kosher"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:alpha="0.87"
+                        android:textAppearance="?android:textAppearance"
+                        android:textSize="16sp"
+                        android:padding="3dp"/>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:alpha="0.87"
+                        android:contentDescription="@string/navigate_to_restaurant"
+                        android:tint="@color/colorPrimary"
+                        app:srcCompat="@drawable/ic_tora"
+                        android:paddingLeft="5dp"/>
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:orientation="horizontal"
+                    android:paddingBottom="7dp">
+
+                    <TextView
+                        android:id="@+id/handicap"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:alpha="0.87"
+                        android:textAppearance="?android:textAppearance"
+                        android:textSize="16sp"
+                        android:padding="5dp"/>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:alpha="0.87"
+                        android:contentDescription="@string/navigate_to_restaurant"
+                        android:tint="@color/colorPrimary"
+                        app:srcCompat="@drawable/ic_accessible"
+                        android:paddingLeft="5dp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:orientation="horizontal"
+                    android:paddingBottom="7dp">
+
+                    <TextView
+                        android:id="@+id/restaurant_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:alpha="0.87"
+                        android:textAppearance="?android:textAppearance"
+                        android:textSize="16sp"
+                        android:padding="5dp"/>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:alpha="0.87"
+                        android:contentDescription="@string/navigate_to_restaurant"
+                        android:tint="@color/colorPrimary"
+                        app:srcCompat="@drawable/ic_location"
+                        android:paddingLeft="5dp"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
 
     </LinearLayout>
 

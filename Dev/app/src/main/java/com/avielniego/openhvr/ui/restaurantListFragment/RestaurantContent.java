@@ -1,45 +1,44 @@
 package com.avielniego.openhvr.ui.restaurantListFragment;
 
+import android.content.Context;
 import android.location.Location;
 import android.support.annotation.NonNull;
+
+import com.avielniego.openhvr.R;
 
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
-public class RestaurantContent
-{
+public class RestaurantContent {
     public long id;
-    public String image           = "";
-    public String name            = "";
-    public String desc            = "";
-    public String area            = "";
-    public String city            = "";
-    public String address         = "";
-    public String phone           = "";
-    public String category        = "";
-    public String type            = "";
-    public String weekOpenHours   = "";
+    public String image = "";
+    public String name = "";
+    public String desc = "";
+    public String area = "";
+    public String city = "";
+    public String address = "";
+    public String phone = "";
+    public String category = "";
+    public String type = "";
+    public String weekOpenHours = "";
     public String fridayOpenHours = "";
-    public String satOpenHours    = "";
-    public String kosher          = "";
-    public String handicap        = "";
-    public String website         = "";
+    public String satOpenHours = "";
+    public String kosher = "";
+    public String handicap = "";
+    public String website = "";
     public double latitude;
     public double longitude;
 
-    public boolean isOpenNow()
-    {
-        try
-        {
+    public boolean isOpenNow() {
+        try {
             return tryIsOpenNow();
         } catch (IndexOutOfBoundsException | NumberFormatException e) {
             throw new OpenHoursDoesNotPresented();
         }
     }
 
-    private boolean tryIsOpenNow()
-    {
+    private boolean tryIsOpenNow() {
         String todayOpenTime = getTodayOpenHours();
 
         String openTime = todayOpenTime.split("-")[0];
@@ -62,8 +61,7 @@ public class RestaurantContent
                 (openHour > closeHour && openHour == nowHour && openMinuet < nowMinuet);
     }
 
-    public String getTodayOpenHours()
-    {
+    public String getTodayOpenHours() {
         int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
         if (day == Calendar.FRIDAY)
             return fridayOpenHours;
@@ -72,14 +70,12 @@ public class RestaurantContent
         return weekOpenHours;
     }
 
-    public float getDistanceFrom(Location location)
-    {
+    public float getDistanceFrom(Location location) {
         return getLocation().distanceTo(location);
     }
 
     @NonNull
-    public Location getLocation()
-    {
+    public Location getLocation() {
         Location l = new Location("");
         l.setLatitude(latitude);
         l.setLongitude(longitude);
@@ -87,8 +83,7 @@ public class RestaurantContent
     }
 
     @Override
-    public boolean equals(Object o)
-    {
+    public boolean equals(Object o) {
         if (this == o)
             return true;
         if (o == null || getClass() != o.getClass())
@@ -105,18 +100,25 @@ public class RestaurantContent
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         int result = name != null ? name.hashCode() : 0;
         result = 31 * result + (city != null ? city.hashCode() : 0);
         result = 31 * result + (address != null ? address.hashCode() : 0);
         return result;
     }
 
-    public List<String> getTypes()
-    {
+    public List<String> getTypes() {
         return Arrays.asList(type.split(","));
     }
 
-    public static class OpenHoursDoesNotPresented extends RuntimeException{}
+    public String getKosherString(Context context) {
+        return kosher.isEmpty() ? context.getString(R.string.not_kosher) : kosher;
+    }
+
+    public String getHandicapString(Context context) {
+        return handicap.equals("-") ? context.getString(R.string.no) : handicap;
+    }
+
+    public static class OpenHoursDoesNotPresented extends RuntimeException {
+    }
 }

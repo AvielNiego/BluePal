@@ -20,10 +20,15 @@
     <string name="current_location">Current</string>
     <string name="cancel_custom_location_filter">Cancel Custom Location Filter</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="website">Website</string>
     <string name="navigate">Navigate</string>
     <string name="not_kosher">לא כשר</string>
     <string name="circle_separator">●</string>
+    <string name="call_to_restaurant">Call To Restaurant</string>
+    <string name="navigate_to_restaurant">Navigate To Restaurant</string>
+    <string name="go_to_restaurant_s_website">Go to Restaurant\'s Website</string>
+    <string name="saturday">שבת:</string>
+    <string name="friday">שישי:</string>
+    <string name="sunday_to_thursday">א-ה:</string>
+    <string name="no">לא</string>
 </resources>

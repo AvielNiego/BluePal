@@ -92,7 +92,7 @@ public class RestaurantDetailsFragment extends Fragment
         viewHolder.fridayOpenHours.setText(restaurant.fridayOpenHours);
         viewHolder.saturdayOpenHours.setText(restaurant.satOpenHours);
         setKosher(restaurant);
-        viewHolder.handicap.setText(restaurant.handicap);
+        viewHolder.handicap.setText(restaurant.getHandicapString(getContext()));
         setAddress(viewHolder, restaurant);
         setDistance(viewHolder, restaurant);
         Glide.with(getContext()).load(restaurant.image).placeholder(R.mipmap.ic_launcher)
@@ -101,7 +101,7 @@ public class RestaurantDetailsFragment extends Fragment
 
     private void setKosher(RestaurantContent restaurant)
     {
-        viewHolder.kosher.setText(restaurant.kosher.isEmpty() ? getContext().getString(R.string.not_kosher): restaurant.kosher);
+        viewHolder.kosher.setText(restaurant.getKosherString(getContext()));
     }
 
     private void setWebsite(final RestaurantContent restaurant)
