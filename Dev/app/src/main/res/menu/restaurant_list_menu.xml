@@ -8,8 +8,8 @@
         app:showAsAction="ifRoom"/>
 
     <item
-        android:id="@+id/action_nav"
-        android:icon="@android:drawable/ic_dialog_map"
-        android:title="Navigate t your place"
+        android:id="@+id/action_notify_new_restaurants"
+        android:checkable="true"
+        android:title="@string/notify_new_restaurants"
         app:showAsAction="collapseActionView"/>
 </menu>

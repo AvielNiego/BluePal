@@ -1,4 +1,4 @@
-package com.avielniego.openhvr.ui.restaurantListFragment;
+package com.avielniego.openhvr.entities;
 
 import android.content.Context;
 import android.location.Location;
@@ -82,6 +82,18 @@ public class RestaurantContent {
         return l;
     }
 
+    public List<String> getTypes() {
+        return Arrays.asList(type.split(","));
+    }
+
+    public String getKosherString(Context context) {
+        return kosher.isEmpty() ? context.getString(R.string.not_kosher) : kosher;
+    }
+
+    public String getHandicapString(Context context) {
+        return handicap.equals("-") ? context.getString(R.string.no) : handicap;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -105,18 +117,6 @@ public class RestaurantContent {
         result = 31 * result + (city != null ? city.hashCode() : 0);
         result = 31 * result + (address != null ? address.hashCode() : 0);
         return result;
-    }
-
-    public List<String> getTypes() {
-        return Arrays.asList(type.split(","));
-    }
-
-    public String getKosherString(Context context) {
-        return kosher.isEmpty() ? context.getString(R.string.not_kosher) : kosher;
-    }
-
-    public String getHandicapString(Context context) {
-        return handicap.equals("-") ? context.getString(R.string.no) : handicap;
     }
 
     public static class OpenHoursDoesNotPresented extends RuntimeException {

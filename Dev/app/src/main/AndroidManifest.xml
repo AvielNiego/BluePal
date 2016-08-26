@@ -25,6 +25,14 @@
             </intent-filter>
         </activity>
 
+        <service
+            android:name=".data.loadData.RestaurantDataDownloadService"
+            android:enabled="true"/>
+
+        <service
+            android:name=".alerts.NewRestaurantAlert$ForbidNotificationsService"
+            android:enabled="true"/>
+
         <!-- SyncAdapter's dummy authentication service -->
         <service android:name=".data.sync.OpenHvrAuthenticatorService">
             <intent-filter>

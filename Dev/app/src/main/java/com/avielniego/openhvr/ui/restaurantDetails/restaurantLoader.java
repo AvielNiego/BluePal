@@ -9,7 +9,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 
 import com.avielniego.openhvr.data.storedData.RestaurantContract.RestaurantEntry;
-import com.avielniego.openhvr.ui.restaurantListFragment.RestaurantContent;
+import com.avielniego.openhvr.entities.RestaurantContent;
 
 public class RestaurantLoader implements LoaderManager.LoaderCallbacks<Cursor>
 {
@@ -98,7 +98,7 @@ public class RestaurantLoader implements LoaderManager.LoaderCallbacks<Cursor>
         restaurantLoadListener.onRestaurantLoaded(cursorDataToRestaurantContent(data));
     }
 
-    private RestaurantContent cursorDataToRestaurantContent(Cursor data)
+    public static RestaurantContent cursorDataToRestaurantContent(Cursor data)
     {
         data.moveToFirst();
         RestaurantContent content = new RestaurantContent();

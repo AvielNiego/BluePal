@@ -2,13 +2,19 @@ package com.avielniego.openhvr.data.loadData;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.avielniego.openhvr.alerts.NewRestaurantAlert;
 import com.avielniego.openhvr.data.storedData.RestaurantContract.RestaurantEntry;
+import com.avielniego.openhvr.entities.RestaurantContent;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.List;
 
 public class RestaurantDataLoader
 {
@@ -27,14 +33,30 @@ public class RestaurantDataLoader
 
     public void loadToDB()
     {
+        List<RestaurantContent> oldRestaurants = getOldRestaurants();
+        ContentValues[] movieContentValues = parseJson();
+        new NewRestaurantAlert(context, oldRestaurants, movieContentValues).alert();
+        context.getContentResolver().bulkInsert(RestaurantEntry.CONTENT_URI, movieContentValues);
+    }
+
+    private List<RestaurantContent> getOldRestaurants() {
+        Cursor query = context.getContentResolver().query(RestaurantEntry.CONTENT_URI, null, null, null, null);
+        List<RestaurantContent> restaurantContents = new RestaurantCursorParser().parseMany(query);
+        if (query != null) {
+            query.close();
+        }
+        return restaurantContents;
+    }
+
+    @NonNull
+    private ContentValues[] parseJson() {
         JSONArray moviesJsonArray = getJsonArray(data, "branch");
         ContentValues[] movieContentValues = new ContentValues[moviesJsonArray.length()];
         for (int i = 0; i < moviesJsonArray.length(); i++)
         {
             movieContentValues[i] = restaurantJsonToContentValue(getJsonObjectAt(moviesJsonArray, i));
         }
-        context.getContentResolver().bulkInsert(RestaurantEntry.CONTENT_URI, movieContentValues);
-
+        return movieContentValues;
     }
 
     private ContentValues restaurantJsonToContentValue(JSONObject restaurantJsonObject)

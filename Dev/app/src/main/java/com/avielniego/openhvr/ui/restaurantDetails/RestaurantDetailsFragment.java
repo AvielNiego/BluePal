@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.avielniego.openhvr.R;
 import com.avielniego.openhvr.ui.LocationUtils;
-import com.avielniego.openhvr.ui.restaurantListFragment.RestaurantContent;
+import com.avielniego.openhvr.entities.RestaurantContent;
 import com.bumptech.glide.Glide;
 
 public class RestaurantDetailsFragment extends Fragment

@@ -31,4 +31,8 @@
     <string name="friday">שישי:</string>
     <string name="sunday_to_thursday">א-ה:</string>
     <string name="no">לא</string>
+    <string name="new_restaurants">New Restaurants</string>
+    <string name="number_new_restaurants">"<xliff:g id="new_restaurants_count">%1$d</xliff:g> New Restaurants"</string>
+    <string name="disable_notifications">Disable Notifications</string>
+    <string name="notify_new_restaurants">Notify New Restaurants</string>
 </resources>

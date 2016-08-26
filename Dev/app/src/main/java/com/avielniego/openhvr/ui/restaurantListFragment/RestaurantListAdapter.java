@@ -4,6 +4,7 @@ import android.content.Context;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.avielniego.openhvr.R;
+import com.avielniego.openhvr.entities.RestaurantContent;
 import com.avielniego.openhvr.ui.GuiUtils;
 import com.avielniego.openhvr.ui.restaurantDetails.RestaurantsDetailsActivity;
 import com.bumptech.glide.Glide;
@@ -114,7 +116,7 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
         {
             GuiUtils.highlightTextInTextView(holder.nameTextView,
                                              nameSearchText,
-                                             context.getResources().getColor(R.color.colorAccent));
+                                             ContextCompat.getColor(context, R.color.colorAccent));
         }
     }
 
