@@ -57,7 +57,6 @@ public class OpenHvrSyncAdapter extends AbstractThreadedSyncAdapter
                               SyncResult syncResult)
     {
         Log.v(LOG_TAG, "onPerformSync");
-        // UpdateDataTask.updateMovieData(getContext());
         new RestaurantDataDownloader().downloadData(getContext());
     }
 

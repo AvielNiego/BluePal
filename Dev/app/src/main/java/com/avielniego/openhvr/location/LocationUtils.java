@@ -1,4 +1,4 @@
-package com.avielniego.openhvr.ui;
+package com.avielniego.openhvr.location;
 
 import android.content.Context;
 import android.content.Intent;

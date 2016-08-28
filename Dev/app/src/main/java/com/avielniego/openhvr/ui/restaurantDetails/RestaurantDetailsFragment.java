@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.avielniego.openhvr.R;
-import com.avielniego.openhvr.ui.LocationUtils;
+import com.avielniego.openhvr.location.LocationUtils;
 import com.avielniego.openhvr.entities.RestaurantContent;
 import com.bumptech.glide.Glide;
 

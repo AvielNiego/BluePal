@@ -48,10 +48,10 @@ public class NewRestaurantAlert{
         return context.getSharedPreferences(context.getString(R.string.content_authority), Context.MODE_PRIVATE);
     }
 
-    public NewRestaurantAlert(Context context, List<RestaurantContent> oldRestaurants, ContentValues[] movieContentValues) {
+    public NewRestaurantAlert(Context context, List<RestaurantContent> oldRestaurants, ContentValues[] newRestaurantContentValues) {
         this.context = context;
         this.oldRestaurants = oldRestaurants;
-        parseContentValues(movieContentValues);
+        parseContentValues(newRestaurantContentValues);
     }
 
     public void alert() {
@@ -109,10 +109,9 @@ public class NewRestaurantAlert{
     @NonNull
     private List<RestaurantContent> getAddedRestaurants() {
         List<RestaurantContent> addedRestaurants = new ArrayList<>();
-        for (RestaurantContent newRestaurant : newRestaurants) {
+        for (RestaurantContent newRestaurant : newRestaurants)
             if(!oldRestaurants.contains(newRestaurant))
                 addedRestaurants.add(newRestaurant);
-        }
         return addedRestaurants;
     }
 
