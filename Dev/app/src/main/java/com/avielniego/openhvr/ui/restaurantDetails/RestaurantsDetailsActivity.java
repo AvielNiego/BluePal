@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.avielniego.openhvr.R;
@@ -51,11 +52,13 @@ public class RestaurantsDetailsActivity extends AppCompatActivity
         return location;
     }
 
-    public static Intent getIntent(Context context, Location location, long restaurantId)
+    public static Intent getIntent(Context context, @Nullable Location location, long restaurantId)
     {
-        return new Intent(context, RestaurantsDetailsActivity.class)
-            .setData(RestaurantContract.RestaurantEntry.buildRestaurantUri(restaurantId))
-            .putExtra(RestaurantsDetailsActivity.LAT_ARG, location.getLatitude())
+        Intent intent = new Intent(context, RestaurantsDetailsActivity.class)
+                .setData(RestaurantContract.RestaurantEntry.buildRestaurantUri(restaurantId));
+        if (location == null)
+            return intent;
+        return intent.putExtra(RestaurantsDetailsActivity.LAT_ARG, location.getLatitude())
             .putExtra(RestaurantsDetailsActivity.LONG_ARG, location.getLongitude());
     }
 }

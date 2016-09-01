@@ -105,7 +105,7 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
 
     private void onRestaurantItemClicked(RestaurantContent restaurant)
     {
-        if (context == null || location == null)
+        if (context == null)
             return;
         context.startActivity(RestaurantsDetailsActivity.getIntent(context, location, restaurant.id));
     }
