@@ -5,6 +5,7 @@ import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.TextViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,7 +34,7 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
     private List<RestaurantContent> filteredRestaurants = new ArrayList<>();
     private List<RestaurantContent> restaurants         = new ArrayList<>();
     @Nullable private Context      context;
-    private Location     location;
+    @Nullable private Location     location;
     @Nullable private RecyclerView recyclerView;
     private Set<String> selectedTypes  = new HashSet<>();
     private String      nameSearchText = "";
@@ -104,7 +105,7 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
 
     private void onRestaurantItemClicked(RestaurantContent restaurant)
     {
-        if (context == null)
+        if (context == null || location == null)
             return;
         context.startActivity(RestaurantsDetailsActivity.getIntent(context, location, restaurant.id));
     }
@@ -151,13 +152,14 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
     private void setClosedStyle(ViewHolder holder)
     {
         holder.isOpenTextView.setText(R.string.closed);
-        holder.isOpenTextView.setTextAppearance(context, R.style.closedTextStyle);
+        TextViewCompat.setTextAppearance(holder.isOpenTextView, R.style.closedTextStyle);
+
     }
 
     private void setOpenedStyle(ViewHolder holder)
     {
         holder.isOpenTextView.setText(R.string.open);
-        holder.isOpenTextView.setTextAppearance(context, R.style.openTextStyle);
+        TextViewCompat.setTextAppearance(holder.isOpenTextView, R.style.openTextStyle);
     }
 
     @Override

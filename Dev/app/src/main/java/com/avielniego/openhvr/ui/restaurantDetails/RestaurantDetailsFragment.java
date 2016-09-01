@@ -27,7 +27,7 @@ public class RestaurantDetailsFragment extends Fragment
 
     private Uri        restaurantUri;
     private ViewHolder viewHolder;
-    private Location   location;
+    @Nullable private Location   location;
 
     public static RestaurantDetailsFragment newInstance(Uri restaurantUri, Location location)
     {
