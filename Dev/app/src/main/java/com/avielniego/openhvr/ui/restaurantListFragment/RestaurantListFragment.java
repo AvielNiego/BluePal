@@ -15,14 +15,13 @@ import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.avielniego.openhvr.R;
-import com.avielniego.openhvr.alerts.NewRestaurantAlert;
 import com.avielniego.openhvr.entities.RestaurantContent;
+import com.avielniego.openhvr.entities.RestaurantsLoader;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
@@ -106,12 +105,6 @@ public class RestaurantListFragment extends Fragment
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.restaurant_list_menu, menu);
         initSearchView(menu);
-        initNotifyNewRestaurantMenuItem(menu);
-    }
-
-    private void initNotifyNewRestaurantMenuItem(Menu menu) {
-        MenuItem actionView = menu.findItem(R.id.action_notify_new_restaurants);
-        actionView.setChecked(NewRestaurantAlert.isNotificationsAllowed(getContext()));
     }
 
     private void initSearchView(Menu menu)
@@ -132,26 +125,6 @@ public class RestaurantListFragment extends Fragment
                 return false;
             }
         });
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        switch (item.getItemId())
-        {
-            case R.id.action_notify_new_restaurants:
-                onNotifyNewRestaurantsMenuCheck(item);
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    private void onNotifyNewRestaurantsMenuCheck(MenuItem item) {
-        item.setChecked(!item.isChecked());
-        if (item.isChecked())
-            NewRestaurantAlert.allowNotifications(getContext());
-        else
-            NewRestaurantAlert.forbidNotifications(getContext());
     }
 
     @Override

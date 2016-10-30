@@ -8,6 +8,11 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="NoActionBarAppTheme" parent="AppTheme">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+    </style>
+
     <style name="openTextStyle">
         <item name="android:textColor">@color/openColor</item>
         <item name="android:textSize">14sp</item>

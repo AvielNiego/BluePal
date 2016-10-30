@@ -35,4 +35,10 @@
     <string name="number_new_restaurants">"<xliff:g id="new_restaurants_count">%1$d</xliff:g> New Restaurants"</string>
     <string name="disable_notifications">Disable Notifications</string>
     <string name="notify_new_restaurants">Notify New Restaurants</string>
+    <string name="list_tab_name">LIST</string>
+    <string name="map_tab_name">MAP</string>
+
+    <string name="banner_ad_unit_id_main_activity">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="banner_ad_unit_id_details_activity">ca-app-pub-3940256099942544/6300978111</string>
+
 </resources>

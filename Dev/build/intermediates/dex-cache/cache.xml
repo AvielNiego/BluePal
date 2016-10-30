@@ -1,3 +1,194 @@
 <?xml version="1.0" encoding="utf-8"?>
-<items version="2" />
+<items version="2" >
 
+    <item
+        is-multidex="false"
+        jar="C:\Develop\OpenHvr\Dev\app\build\intermediates\exploded-aar\com.crashlytics.sdk.android\beta\1.2.2\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="b42cf2134829f715edfa2adaf0ee246631322dba">
+        <dex dex="C:\Develop\OpenHvr\Dev\app\build\intermediates\pre-dexed\debug\com.crashlytics.sdk.android-beta-1.2.2_0295d57611c861f7e02972565aba3b97cbf98ca2.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Program Files\Android\Android Studio\gradle\m2repository\com\google\guava\guava\18.0\guava-18.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="cce0823396aa693798f8882e64213b1772032b09">
+        <dex dex="C:\Develop\OpenHvr\Dev\app\build\intermediates\pre-dexed\debug\guava-18.0_23ae9d619c9ad952ac11ce7bff78df802e3e98c2.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Develop\OpenHvr\Dev\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\24.1.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="f62e763609f65e47dc6c498760a4accf02776788">
+        <dex dex="C:\Develop\OpenHvr\Dev\app\build\intermediates\pre-dexed\debug\com.android.support-support-vector-drawable-24.1.1_41af3c7dc10c7bed2dcff96359e883348955516f.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Develop\OpenHvr\Dev\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-base\9.4.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="3dee4ce5844d39d843d503fb8fe04e51e5bfffac">
+        <dex dex="C:\Develop\OpenHvr\Dev\app\build\intermediates\pre-dexed\debug\com.google.android.gms-play-services-base-9.4.0_3cdb8946889fa3b55e02d7fba4630d5908ec3e49.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Develop\OpenHvr\Dev\app\build\intermediates\exploded-aar\com.crashlytics.sdk.android\crashlytics-core\2.3.11\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="e3e366ad917b1fd4de5f1a0626d4e9af903dba52">
+        <dex dex="C:\Develop\OpenHvr\Dev\app\build\intermediates\pre-dexed\debug\com.crashlytics.sdk.android-crashlytics-core-2.3.11_ceb2068e0f13c033aa03bd387bd18062baad23ec.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Develop\OpenHvr\Dev\app\build\intermediates\exploded-aar\io.fabric.sdk.android\fabric\1.3.13\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="23e3acde10f4cf52778f8dc88107fb96459f2392">
+        <dex dex="C:\Develop\OpenHvr\Dev\app\build\intermediates\pre-dexed\debug\io.fabric.sdk.android-fabric-1.3.13_50f9ab87868c901eb75b23215769cd5081cefd37.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Develop\OpenHvr\Dev\app\build\intermediates\exploded-aar\com.android.support\support-v4\24.1.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="6d7d803871e3203465f71a163e7af104f807b446">
+        <dex dex="C:\Develop\OpenHvr\Dev\app\build\intermediates\pre-dexed\debug\com.android.support-support-v4-24.1.1_c05954c192ff30641cc413157f1ebe4720e34008.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Develop\OpenHvr\Dev\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\24.1.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="1256c10604bb098490eab070d76754ac5ceab35c">
+        <dex dex="C:\Develop\OpenHvr\Dev\app\build\intermediates\pre-dexed\debug\com.android.support-appcompat-v7-24.1.1_3ca05bc71846f3d597bfc1ff0b01c5a2ad98b077.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Develop\OpenHvr\Dev\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-tasks\9.4.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="8a36d229011e75f0caef408e1adf0d3fd4d94e02">
+        <dex dex="C:\Develop\OpenHvr\Dev\app\build\intermediates\pre-dexed\debug\com.google.android.gms-play-services-tasks-9.4.0_224c39660f3b89411228e81e922adf1894801b74.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Develop\OpenHvr\Dev\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\24.1.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="787871951412550519b0222aba3c9df4cea49875">
+        <dex dex="C:\Develop\OpenHvr\Dev\app\build\intermediates\pre-dexed\debug\com.android.support-recyclerview-v7-24.1.1_4d5575458ffd39c886e84da1ef6e24a6cbf0e840.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Develop\OpenHvr\Dev\app\build\intermediates\exploded-aar\com.android.support\design\24.1.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="e195bd694d5389acfba27ff4fdfa64c4c65b2c05">
+        <dex dex="C:\Develop\OpenHvr\Dev\app\build\intermediates\pre-dexed\debug\com.android.support-design-24.1.1_5dc25ca728423902ca25a1277a48fa60a662d916.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Develop\OpenHvr\Dev\app\build\intermediates\exploded-aar\com.crashlytics.sdk.android\crashlytics\2.6.2\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="a637ea73d78e58f13decdc721b01817d39941f10">
+        <dex dex="C:\Develop\OpenHvr\Dev\app\build\intermediates\pre-dexed\debug\com.crashlytics.sdk.android-crashlytics-2.6.2_c72e6c6ffca0e6ef74a283ae016554f941aa692b.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Develop\OpenHvr\Dev\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-maps\9.4.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="e454c414a069241ee08444d187f2dd3a702596b5">
+        <dex dex="C:\Develop\OpenHvr\Dev\app\build\intermediates\pre-dexed\debug\com.google.android.gms-play-services-maps-9.4.0_67820ca8f96ab2938abf5c816eb86db24bf76f41.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Develop\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\24.1.1\support-annotations-24.1.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="3af19f153122737b372622fa6c81dd11a1c6b999">
+        <dex dex="C:\Develop\OpenHvr\Dev\app\build\intermediates\pre-dexed\debug\support-annotations-24.1.1_40a6fc0e789c36f9593c744f209a418540c77ff1.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Develop\OpenHvr\Dev\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-basement\9.4.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="618485fef3ebe12127f7622abbc9b5b39057b5c2">
+        <dex dex="C:\Develop\OpenHvr\Dev\app\build\intermediates\pre-dexed\debug\com.google.android.gms-play-services-basement-9.4.0_9e89d18c1747e4a78ab5a005d22e35c1a0016f0e.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\אביאל\.gradle\caches\modules-2\files-2.1\com.github.bumptech.glide\glide\3.7.0\9e9eeaf9948ee4d6c3ab354e8dc14368f16994a4\glide-3.7.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="9e9eeaf9948ee4d6c3ab354e8dc14368f16994a4">
+        <dex dex="C:\Develop\OpenHvr\Dev\app\build\intermediates\pre-dexed\debug\glide-3.7.0_3c351d5b2dd08effbfccd980e0a1c33d1ff09d26.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Develop\OpenHvr\Dev\app\build\intermediates\exploded-aar\com.android.support\cardview-v7\24.1.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="4add8aa95c9f4e9a2ad64b7e2bf08e97e28955c1">
+        <dex dex="C:\Develop\OpenHvr\Dev\app\build\intermediates\pre-dexed\debug\com.android.support-cardview-v7-24.1.1_44f6a4fe098ed4249542939b2f3750b6f4416a86.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Develop\OpenHvr\Dev\app\build\intermediates\exploded-aar\com.android.support\support-v4\24.1.1\jars\libs\internal_impl-24.1.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="f78c2f395cb096f9dc1dc07e729922b8fcd3c4f5">
+        <dex dex="C:\Develop\OpenHvr\Dev\app\build\intermediates\pre-dexed\debug\internal_impl-24.1.1_6e0e79debf014c1f59f46eb3f871d70dd4a77497.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Develop\OpenHvr\Dev\app\build\intermediates\exploded-aar\com.crashlytics.sdk.android\answers\1.3.9\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="e3376f705dc1863a8782faf275e56f188b8129eb">
+        <dex dex="C:\Develop\OpenHvr\Dev\app\build\intermediates\pre-dexed\debug\com.crashlytics.sdk.android-answers-1.3.9_20bc9db49e23b81365c12a73523d9ba75ab471b5.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Develop\OpenHvr\Dev\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\24.1.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="c936c1bd42f0c018c18920c7bec619ef056b24f8">
+        <dex dex="C:\Develop\OpenHvr\Dev\app\build\intermediates\pre-dexed\debug\com.android.support-animated-vector-drawable-24.1.1_18bd21db9115d038be500fffa3c8e5a0d443ea45.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Develop\OpenHvr\Dev\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-places\9.4.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.2"
+        sha1="e35002351f2d415093a9b564652d4b56be6a0593">
+        <dex dex="C:\Develop\OpenHvr\Dev\app\build\intermediates\pre-dexed\debug\com.google.android.gms-play-services-places-9.4.0_1eda7d8507c9f0deb8156005909b3085ef900989.jar" />
+    </item>
+
+</items>

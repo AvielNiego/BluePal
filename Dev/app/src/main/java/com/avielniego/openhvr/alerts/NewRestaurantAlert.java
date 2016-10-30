@@ -16,7 +16,7 @@ import android.support.v4.content.ContextCompat;
 import com.avielniego.openhvr.R;
 import com.avielniego.openhvr.data.storedData.RestaurantContract.RestaurantEntry;
 import com.avielniego.openhvr.entities.RestaurantContent;
-import com.avielniego.openhvr.ui.MainActivity;
+import com.avielniego.openhvr.ui.main.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
