@@ -10,6 +10,11 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.avielniego.openhvr.R;
 import com.avielniego.openhvr.data.storedData.RestaurantContract;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+
+import static com.avielniego.openhvr.ui.main.MainActivity.AD_MOD_APP_ID;
 
 public class RestaurantsDetailsActivity extends AppCompatActivity
 {
@@ -22,7 +27,15 @@ public class RestaurantsDetailsActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant_details);
         setToolbar();
+        addAds();
         addFragment();
+    }
+
+    private void addAds() {
+        MobileAds.initialize(getApplicationContext(), AD_MOD_APP_ID);
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
     }
 
     private void setToolbar()
