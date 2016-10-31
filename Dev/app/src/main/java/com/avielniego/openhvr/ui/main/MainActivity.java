@@ -22,12 +22,16 @@ import com.avielniego.openhvr.data.sync.OpenHvrSyncAdapter;
 import com.avielniego.openhvr.location.LocationPermissionVerifier;
 import com.avielniego.openhvr.ui.restaurantListFragment.RestaurantListFragment;
 import com.crashlytics.android.Crashlytics;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 
 import io.fabric.sdk.android.Fabric;
 
 public class MainActivity extends AppCompatActivity
 {
     public static final String LOG_TAG = MainActivity.class.getSimpleName();
+    public static final String AD_MOD_APP_ID = "ca-app-pub-7169359416051111~6792294984";
 
     private RestaurantListFragment restaurantListFragment;
     private MainPagerAdapter mainPagerAdapter;
@@ -39,8 +43,16 @@ public class MainActivity extends AppCompatActivity
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_main);
         OpenHvrSyncAdapter.initializeSyncAdapter(this);
+        addAds();
         setViewPager();
         getLocation();
+    }
+
+    private void addAds() {
+        MobileAds.initialize(getApplicationContext(), AD_MOD_APP_ID);
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
     }
 
     private void setViewPager()
