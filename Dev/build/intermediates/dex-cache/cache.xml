@@ -30,6 +30,15 @@
     </item>
     <item
         is-multidex="false"
+        jar="C:\Develop\OpenHvr\Dev\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-analytics-impl\9.8.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.3"
+        sha1="50e35ae101a679c4c8ef3dda075b1df9d5d947d9">
+        <dex dex="C:\Develop\OpenHvr\Dev\app\build\intermediates\pre-dexed\debug\com.google.android.gms-play-services-analytics-impl-9.8.0_99222e91bac9d03498887e0da3a6f4dedc5f6cf0.jar" />
+    </item>
+    <item
+        is-multidex="false"
         jar="C:\Develop\OpenHvr\Dev\app\build\intermediates\exploded-aar\io.fabric.sdk.android\fabric\1.3.13\jars\classes.jar"
         jumboMode="false"
         optimize="true"
@@ -99,6 +108,15 @@
         revision="23.0.3"
         sha1="bf2e1838e4428616c1aa26edf43de72b5b99bf84">
         <dex dex="C:\Develop\OpenHvr\Dev\app\build\intermediates\pre-dexed\debug\com.google.android.gms-play-services-tasks-9.8.0_43e0429197e3ca33087cab2337f49f8503f2a82c.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Develop\OpenHvr\Dev\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-analytics\9.8.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.3"
+        sha1="16afe57c1d7f8165d107c7806ce7b0c71de87159">
+        <dex dex="C:\Develop\OpenHvr\Dev\app\build\intermediates\pre-dexed\debug\com.google.android.gms-play-services-analytics-9.8.0_ce040874a8f380f185787fe5b411d770d4510689.jar" />
     </item>
     <item
         is-multidex="false"

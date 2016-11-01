@@ -10,7 +10,7 @@
     <string name="closed">Closed</string>
     <string name="location_permission_title">Location Permission</string>
     <string name="location_permission_rational">Location is required to show nearby restaurants</string>
-    <string name="distance">"<xliff:g id="distance">%1$s</xliff:g>km"
+    <string name="distance" translatable="false">"<xliff:g id="distance">%1$s</xliff:g>km"
     </string>
     <string name="search">Search Restaurant Name</string>
     <string name="hide_closed_restaurant">Hide Closed Restaurants</string>
@@ -22,15 +22,15 @@
 
     <string name="website">Website</string>
     <string name="navigate">Navigate</string>
-    <string name="not_kosher">לא כשר</string>
-    <string name="circle_separator">●</string>
+    <string name="not_kosher" translatable="false">לא כשר</string>
+    <string name="circle_separator" translatable="false">●</string>
     <string name="call_to_restaurant">Call To Restaurant</string>
     <string name="navigate_to_restaurant">Navigate To Restaurant</string>
     <string name="go_to_restaurant_s_website">Go to Restaurant\'s Website</string>
-    <string name="saturday">שבת:</string>
-    <string name="friday">שישי:</string>
-    <string name="sunday_to_thursday">א-ה:</string>
-    <string name="no">לא</string>
+    <string name="saturday" translatable="false">שבת:</string>
+    <string name="friday" translatable="false">שישי:</string>
+    <string name="sunday_to_thursday" translatable="false">א-ה:</string>
+    <string name="no" translatable="false">לא</string>
     <string name="new_restaurants">New Restaurants</string>
     <string name="number_new_restaurants">"<xliff:g id="new_restaurants_count">%1$d</xliff:g> New Restaurants"</string>
     <string name="disable_notifications">Disable Notifications</string>
@@ -38,7 +38,7 @@
     <string name="list_tab_name">LIST</string>
     <string name="map_tab_name">MAP</string>
 
-    <string name="banner_ad_unit_id_main_activity">ca-app-pub-3940256099942544/6300978111</string>
-    <string name="banner_ad_unit_id_details_activity">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="banner_ad_unit_id_main_activity" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="banner_ad_unit_id_details_activity" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
 
 </resources>

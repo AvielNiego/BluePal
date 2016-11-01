@@ -1,0 +1,38 @@
+{
+  "project_info": {
+    "project_number": "712428974268",
+    "project_id": "openhvr-1894"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:712428974268:android:2927cbb896f78dd7",
+        "android_client_info": {
+          "package_name": "com.avielniego.openhvr"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqYFl-atLF7uZ-lVQN2dn2_-0V01xbkss"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 2,
+          "analytics_property": {
+            "tracking_id": "UA-80749239-2"
+          }
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

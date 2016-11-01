@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="http://schemas.android.com/tools">
+    <string name="open">פתוח</string>
+    <string name="closed">סגור</string>
+    <string name="location_permission_title">הרשאות מיקום</string>
+    <string name="location_permission_rational">אנו צריכים את המיקום כדי להראות לך מסעדות שבסביבה :)</string>
+
+    <string name="search">חיפוש שם מסעדה</string>
+    <string name="hide_closed_restaurant">הסתר מסעדות סגורות</string>
+    <string name="filter_restaurants">סנן מסעדות</string>
+    <string name="filter_restaurant_types">בחר סוג מסעדה</string>
+    <string name="categories">קטגרויות</string>
+    <string name="current_location">בסביבתי</string>
+    <string name="cancel_custom_location_filter">הצג מסעדות בסביבתי</string>
+
+    <string name="website">אתר</string>
+    <string name="navigate">נווט</string>
+    <string name="call_to_restaurant">התקשר למסעדה</string>
+    <string name="navigate_to_restaurant">נווט למסעדה</string>
+    <string name="go_to_restaurant_s_website">פתח את אתר המסעדה</string>
+    <string name="new_restaurants">מסעדות חדשות</string>
+    <string name="number_new_restaurants">"<xliff:g id="new_restaurants_count">%1$d</xliff:g> מסעדות חדשות"</string>
+    <string name="disable_notifications">בטל התראות</string>
+    <string name="notify_new_restaurants">קבל עדכון על מסעדות חדשות</string>
+    <string name="list_tab_name">רשימה</string>
+    <string name="map_tab_name">מפה</string>
+</resources>

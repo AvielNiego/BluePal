@@ -20,13 +20,18 @@ import com.avielniego.openhvr.R;
 import com.avielniego.openhvr.alerts.NewRestaurantAlert;
 import com.avielniego.openhvr.data.sync.OpenHvrSyncAdapter;
 import com.avielniego.openhvr.location.LocationPermissionVerifier;
+import com.avielniego.openhvr.ui.analytics.AnalyticsApplication;
 import com.avielniego.openhvr.ui.restaurantListFragment.RestaurantListFragment;
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import io.fabric.sdk.android.Fabric;
+
+import static android.R.attr.name;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -60,12 +65,24 @@ public class MainActivity extends AppCompatActivity
         ViewPager viewPager = (ViewPager) findViewById(R.id.main_pager);
         mainPagerAdapter = new MainPagerAdapter(getSupportFragmentManager(), this);
         viewPager.setAdapter(mainPagerAdapter);
+        initAnalytics(viewPager, mainPagerAdapter);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.mainTabs);
         tabLayout.setupWithViewPager(viewPager);
+    }
+
+    private void initAnalytics(ViewPager viewPager, final MainPagerAdapter mainPagerAdapter) {
+        final Tracker tracker = ((AnalyticsApplication) getApplication()).getDefaultTracker();
+        viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                tracker.setScreenName("Tab~" + mainPagerAdapter.getPageTitle(position));
+                tracker.send(new HitBuilders.ScreenViewBuilder().build());
+            }
+        });
     }
 
     private void getLocation()
