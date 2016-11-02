@@ -1,6 +1,7 @@
-package com.avielniego.openhvr.entities;
+package com.avielniego.openhvr.data.storedData;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
@@ -8,7 +9,9 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 
 import com.avielniego.openhvr.data.loadData.RestaurantCursorParser;
+import com.avielniego.openhvr.data.loadData.RestaurantDataDownloadService;
 import com.avielniego.openhvr.data.storedData.RestaurantContract;
+import com.avielniego.openhvr.entities.RestaurantContent;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -20,6 +23,7 @@ public class RestaurantsLoader implements LoaderManager.LoaderCallbacks<Cursor>
 
     private Context       context;
     private RestaurantLoadListener restaurantLoadListener;
+    private boolean isFirstLoadTry = true;
 
     public RestaurantsLoader(Context context, RestaurantLoadListener restaurantLoadListener)
     {
@@ -52,6 +56,10 @@ public class RestaurantsLoader implements LoaderManager.LoaderCallbacks<Cursor>
 
     private void onRestaurantLoadFinished(Cursor data)
     {
+        if(data.getCount() == 0 && isFirstLoadTry) {
+            context.startService(new Intent(context, RestaurantDataDownloadService.class));
+            isFirstLoadTry = false;
+        }
         restaurantLoadListener.onRestaurantLoaded(clearDuplicates(new RestaurantCursorParser().parseMany(data)));
     }
 

@@ -33,15 +33,10 @@ public class RestaurantDataLoader
 
     public void loadToDB()
     {
-        ContentValues[] movieContentValues = parseJson();
-        alertForNewRestaurants(movieContentValues);
+        ContentValues[] restaurantsContentValues = parseJson();
+        new NewRestaurantAlert(context, getOldRestaurants(), restaurantsContentValues).alert();
         context.getContentResolver().delete(RestaurantEntry.CONTENT_URI, null, null);
-        context.getContentResolver().bulkInsert(RestaurantEntry.CONTENT_URI, movieContentValues);
-    }
-
-    private void alertForNewRestaurants(ContentValues[] movieContentValues) {
-        List<RestaurantContent> oldRestaurants = getOldRestaurants();
-        new NewRestaurantAlert(context, oldRestaurants, movieContentValues).alert();
+        context.getContentResolver().bulkInsert(RestaurantEntry.CONTENT_URI, restaurantsContentValues);
     }
 
     private List<RestaurantContent> getOldRestaurants() {

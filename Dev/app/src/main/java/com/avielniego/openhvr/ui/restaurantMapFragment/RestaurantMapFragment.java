@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 
 import com.avielniego.openhvr.R;
 import com.avielniego.openhvr.entities.RestaurantContent;
-import com.avielniego.openhvr.entities.RestaurantsLoader;
+import com.avielniego.openhvr.data.storedData.RestaurantsLoader;
 import com.avielniego.openhvr.ui.restaurantDetails.RestaurantsDetailsActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -31,7 +31,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.List;
 
 public class RestaurantMapFragment extends Fragment {
-    public static final LatLng ISRAEL_LAT_LNG = new LatLng(31.3921827, 37.3255459);
+    public static final LatLng ISRAEL_LAT_LNG = new LatLng(32.004436, 34.787704);
     private Float hueColor;
 
     public RestaurantMapFragment() {

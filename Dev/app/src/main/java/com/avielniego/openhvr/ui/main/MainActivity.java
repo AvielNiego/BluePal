@@ -2,6 +2,7 @@ package com.avielniego.openhvr.ui.main;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -18,6 +19,7 @@ import android.view.MenuItem;
 
 import com.avielniego.openhvr.R;
 import com.avielniego.openhvr.alerts.NewRestaurantAlert;
+import com.avielniego.openhvr.data.loadData.RestaurantDataDownloadService;
 import com.avielniego.openhvr.data.sync.OpenHvrSyncAdapter;
 import com.avielniego.openhvr.location.LocationPermissionVerifier;
 import com.avielniego.openhvr.ui.analytics.AnalyticsApplication;
@@ -30,8 +32,6 @@ import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
 import io.fabric.sdk.android.Fabric;
-
-import static android.R.attr.name;
 
 public class MainActivity extends AppCompatActivity
 {
