@@ -18,6 +18,7 @@
     <string name="filter_restaurant_types">Filter Restaurant Types</string>
     <string name="categories">Categories</string>
     <string name="current_location">Current</string>
+    <string name="choose_place">Choose Place</string>
     <string name="cancel_custom_location_filter">Cancel Custom Location Filter</string>
 
     <string name="website">Website</string>

@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.avielniego.openhvr.R;
 import com.avielniego.openhvr.entities.RestaurantContent;
 import com.avielniego.openhvr.data.storedData.RestaurantsLoader;
+import com.avielniego.openhvr.location.LocationPermissionVerifier;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
@@ -161,6 +162,7 @@ public class RestaurantListFragment extends Fragment
     {
 
         locationFilterView = ((TextView) view.findViewById(R.id.location_filter));
+        locationFilterView.setText(getLocationFilterViewTextResourceId());
         enableLocationFilter();
     }
 
@@ -309,8 +311,12 @@ public class RestaurantListFragment extends Fragment
             return;
         adapter.setLocation(location);
         if (locationFilterView != null)
-            locationFilterView.setText(R.string.current_location);
+            locationFilterView.setText(getLocationFilterViewTextResourceId());
         if (cancelLocationFilter != null)
             cancelLocationFilter.setVisibility(View.GONE);
+    }
+
+    private int getLocationFilterViewTextResourceId() {
+        return currentLocation != null ? R.string.current_location : R.string.choose_place;
     }
 }

@@ -27,6 +27,16 @@ public class RestaurantsDetailsActivity extends AppCompatActivity
 
     private Tracker tracker;
 
+    public static Intent getIntent(Context context, @Nullable Location location, long restaurantId)
+    {
+        Intent intent = new Intent(context, RestaurantsDetailsActivity.class)
+                .setData(RestaurantContract.RestaurantEntry.buildRestaurantUri(restaurantId));
+        if (location == null)
+            return intent;
+        return intent.putExtra(RestaurantsDetailsActivity.LAT_ARG, location.getLatitude())
+                .putExtra(RestaurantsDetailsActivity.LONG_ARG, location.getLongitude());
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -63,7 +73,6 @@ public class RestaurantsDetailsActivity extends AppCompatActivity
 
     private void addFragment()
     {
-
         Uri restaurantUri = getIntent().getData();
         Location l = getLocation();
         getSupportFragmentManager().beginTransaction().add(R.id.restaurant_details_fragment_container,
@@ -71,21 +80,15 @@ public class RestaurantsDetailsActivity extends AppCompatActivity
                 .commit();
     }
 
-    private Location getLocation()
+    private @Nullable Location getLocation()
     {
         Location location = new Location("");
         location.setLongitude(getIntent().getDoubleExtra(LONG_ARG, 0));
         location.setLatitude(getIntent().getDoubleExtra(LAT_ARG, 0));
-        return location;
+        return isDefaultLocation(location) ? null : location;
     }
 
-    public static Intent getIntent(Context context, @Nullable Location location, long restaurantId)
-    {
-        Intent intent = new Intent(context, RestaurantsDetailsActivity.class)
-                .setData(RestaurantContract.RestaurantEntry.buildRestaurantUri(restaurantId));
-        if (location == null)
-            return intent;
-        return intent.putExtra(RestaurantsDetailsActivity.LAT_ARG, location.getLatitude())
-            .putExtra(RestaurantsDetailsActivity.LONG_ARG, location.getLongitude());
+    private boolean isDefaultLocation(Location location) {
+        return location.getLatitude() == 0 && location.getLatitude() == 0;
     }
 }
