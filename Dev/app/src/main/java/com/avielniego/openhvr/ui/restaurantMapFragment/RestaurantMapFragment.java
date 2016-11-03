@@ -14,29 +14,28 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.avielniego.openhvr.R;
-import com.avielniego.openhvr.entities.RestaurantContent;
 import com.avielniego.openhvr.data.storedData.RestaurantsLoader;
+import com.avielniego.openhvr.entities.RestaurantContent;
 import com.avielniego.openhvr.ui.restaurantDetails.RestaurantsDetailsActivity;
+import com.avielniego.openhvr.ui.restaurantMapFragment.googleMapsClusterMarker.RestaurantClusterRenderer;
+import com.avielniego.openhvr.ui.restaurantMapFragment.googleMapsClusterMarker.RestaurantsClusterMarker;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.clustering.ClusterManager;
 
 import java.util.List;
 
 public class RestaurantMapFragment extends Fragment {
     public static final LatLng ISRAEL_LAT_LNG = new LatLng(32.004436, 34.787704);
-    private Float hueColor;
 
     public RestaurantMapFragment() {
     }
-
     public static RestaurantMapFragment newInstance() {
         RestaurantMapFragment fragment = new RestaurantMapFragment();
         Bundle args = new Bundle();
@@ -44,8 +43,10 @@ public class RestaurantMapFragment extends Fragment {
         return fragment;
     }
 
-    @Nullable private Location location;
-    private MapView mMapView;
+    private ClusterManager<RestaurantsClusterMarker> clusterManager;
+    @Nullable
+    private Location location;
+    private MapView mapView;
     private GoogleMap googleMap;
 
     @Override
@@ -57,23 +58,31 @@ public class RestaurantMapFragment extends Fragment {
     }
 
     private void createMap(Bundle savedInstanceState, View rootView) {
-        mMapView = (MapView) rootView.findViewById(R.id.mapView);
-        mMapView.onCreate(savedInstanceState);
-        mMapView.onResume(); // needed to get the map to display immediately
+        mapView = (MapView) rootView.findViewById(R.id.mapView);
+        mapView.onCreate(savedInstanceState);
+        mapView.onResume(); // needed to get the map to display immediately
         initMap();
 
-        mMapView.getMapAsync(new OnMapReadyCallback() {
+        mapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap mMap) {
-                googleMap = mMap;
-                moveCamera();
-                launchRestaurantLoader();
-                googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-                    @Override
-                    public void onInfoWindowClick(Marker marker) {
-                        onInfoWindowClicked(marker);
-                    }
-                });
+                RestaurantMapFragment.this.onMapReady(mMap);
+            }
+        });
+    }
+
+    private void onMapReady(GoogleMap mMap) {
+        googleMap = mMap;
+        clusterManager = new ClusterManager<>(getContext(), googleMap);
+        clusterManager.setRenderer(new RestaurantClusterRenderer(getContext(), mMap, clusterManager));
+        googleMap.setOnCameraIdleListener(clusterManager);
+        googleMap.setOnMarkerClickListener(clusterManager);
+        launchRestaurantLoader();
+        moveCamera();
+        googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                onInfoWindowClicked(marker);
             }
         });
     }
@@ -86,9 +95,7 @@ public class RestaurantMapFragment extends Fragment {
     private void moveCamera() {
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             moveCameraToCurrentLocation();
-        }
-        else
-        {
+        } else {
             movieCameraToDefaultLocation();
         }
     }
@@ -102,11 +109,9 @@ public class RestaurantMapFragment extends Fragment {
     private void moveCameraToCurrentLocation() {
         googleMap.setMyLocationEnabled(true);
 
-        if (location == null)
-        {
+        if (location == null) {
             movieCameraToDefaultLocation();
-        }
-        else {
+        } else {
             CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(location.getLatitude(), location.getLongitude())).zoom(12).build();
             googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         }
@@ -123,25 +128,25 @@ public class RestaurantMapFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        mMapView.onResume();
+        mapView.onResume();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        mMapView.onPause();
+        mapView.onPause();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mMapView.onDestroy();
+        mapView.onDestroy();
     }
 
     @Override
     public void onLowMemory() {
         super.onLowMemory();
-        mMapView.onLowMemory();
+        mapView.onLowMemory();
     }
 
     public void onLocationReceived(Location location) {
@@ -166,23 +171,7 @@ public class RestaurantMapFragment extends Fragment {
 
     private void addMarkerToMap(RestaurantContent restaurant) {
         LatLng position = new LatLng(restaurant.getLocation().getLatitude(), restaurant.getLocation().getLongitude());
-        googleMap.addMarker(new MarkerOptions().position(position)
-                .title(restaurant.name)
-                .snippet(restaurant.type)
-                .icon(BitmapDescriptorFactory.defaultMarker(getHueMarkerColorLazy())))
-                .setTag(restaurant);
-    }
-
-    private float getHueMarkerColorLazy() {
-        if (hueColor == null) {
-            hueColor = getHueMarkerColor();
-        }
-        return hueColor;
-    }
-
-    private float getHueMarkerColor() {
-        float[] hsv = new float[3];
-        Color.colorToHSV(ContextCompat.getColor(getContext(), R.color.colorAccent), hsv);
-        return hsv[0];
+        RestaurantsClusterMarker offsetItem = new RestaurantsClusterMarker(position, restaurant);
+        clusterManager.addItem(offsetItem);
     }
 }
