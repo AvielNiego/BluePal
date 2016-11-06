@@ -34,6 +34,8 @@ public class MainActivity extends AppCompatActivity
 {
     public static final String LOG_TAG = MainActivity.class.getSimpleName();
     public static final String AD_MOD_APP_ID = "ca-app-pub-7169359416051111~6792294984";
+    public static final String TOGGLE_NEW_RESTAURANT_NOTIFICATION_ON_LOG = "ToggleNewRestaurantNotificationOn";
+    public static final String TOGGLE_NEW_RESTAURANT_NOTIFICATION_OFF_LOG = "ToggleNewRestaurantNotificationOff";
 
     private MainPagerAdapter mainPagerAdapter;
     private Tracker tracker;
@@ -77,8 +79,7 @@ public class MainActivity extends AppCompatActivity
         viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
-                Tracker tracker = ((AnalyticsApplication) getApplication()).getDefaultTracker();
-                tracker.setScreenName("Tab~" + mainPagerAdapter.getPageTitle(position));
+                tracker.setScreenName("Tab~" + mainPagerAdapter.getItemName(position));
                 tracker.send(new HitBuilders.ScreenViewBuilder().build());
             }
         });
@@ -177,7 +178,7 @@ public class MainActivity extends AppCompatActivity
 
     private void onNotifyNewRestaurantsMenuCheck(MenuItem item) {
         boolean isChecked = item.isChecked();
-        logAction(isChecked ? "ToggleNewRestaurantNotificationOn" : "ToggleNewRestaurantNotificationOff");
+        logAction(isChecked ? TOGGLE_NEW_RESTAURANT_NOTIFICATION_ON_LOG : TOGGLE_NEW_RESTAURANT_NOTIFICATION_OFF_LOG);
         item.setChecked(!isChecked);
         toggleNotification(isChecked);
     }

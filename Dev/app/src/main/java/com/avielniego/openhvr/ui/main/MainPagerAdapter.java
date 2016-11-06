@@ -25,6 +25,8 @@ public class MainPagerAdapter extends FragmentPagerAdapter
         this.activity = activity;
     }
 
+
+
     @Override
     public Fragment getItem(int position) {
         switch (position)
@@ -61,5 +63,9 @@ public class MainPagerAdapter extends FragmentPagerAdapter
     {
         restaurantListFragment.onLocationReceived(location);
         restaurantMapFragment.onLocationReceived(location);
+    }
+
+    public String getItemName(int position) {
+        return getItem(position).getClass().getSimpleName();
     }
 }
