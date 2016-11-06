@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity
     public static final String AD_MOD_APP_ID = "ca-app-pub-7169359416051111~6792294984";
 
     private MainPagerAdapter mainPagerAdapter;
+    private Tracker tracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+        tracker = ((AnalyticsApplication) getApplication()).getDefaultTracker();
         initServices();
         initViewPager();
         getLocation();
@@ -174,10 +176,23 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void onNotifyNewRestaurantsMenuCheck(MenuItem item) {
-        item.setChecked(!item.isChecked());
-        if (item.isChecked())
+        boolean isChecked = item.isChecked();
+        logAction(isChecked ? "ToggleNewRestaurantNotificationOn" : "ToggleNewRestaurantNotificationOff");
+        item.setChecked(!isChecked);
+        toggleNotification(isChecked);
+    }
+
+    private void toggleNotification(boolean isChecked) {
+        if (isChecked)
             NewRestaurantAlert.allowNotifications(this);
         else
             NewRestaurantAlert.forbidNotifications(this);
+    }
+
+    private void logAction(String actionName) {
+        tracker.send(new HitBuilders.EventBuilder()
+                .setCategory("Action")
+                .setAction(actionName)
+                .build());
     }
 }

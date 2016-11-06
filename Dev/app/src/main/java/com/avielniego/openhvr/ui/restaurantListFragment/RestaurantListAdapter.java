@@ -1,6 +1,6 @@
 package com.avielniego.openhvr.ui.restaurantListFragment;
 
-import android.content.Context;
+import android.app.Activity;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,8 +16,10 @@ import android.widget.TextView;
 import com.avielniego.openhvr.R;
 import com.avielniego.openhvr.entities.RestaurantContent;
 import com.avielniego.openhvr.ui.GuiUtils;
+import com.avielniego.openhvr.ui.analytics.AnalyticsApplication;
 import com.avielniego.openhvr.ui.restaurantDetails.RestaurantsDetailsActivity;
 import com.bumptech.glide.Glide;
+import com.google.android.gms.analytics.HitBuilders;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
@@ -33,7 +35,7 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
 {
     private List<RestaurantContent> filteredRestaurants = new ArrayList<>();
     private List<RestaurantContent> restaurants         = new ArrayList<>();
-    @Nullable private Context      context;
+    @Nullable private Activity activity;
     @Nullable private Location     location;
     @Nullable private RecyclerView recyclerView;
     private Set<String> selectedTypes  = new HashSet<>();
@@ -49,9 +51,9 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
         updateRecyclerView();
     }
 
-    public void setContext(@Nullable Context context)
+    public void setActivity(@Nullable Activity activity)
     {
-        this.context = context;
+        this.activity = activity;
     }
 
     private void updateRecyclerView()
@@ -91,7 +93,7 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
         holder.addressTextView.setText(restaurant.city);
         setDistance(holder, restaurant);
         setIsOpenTextViewValue(holder, restaurant);
-        Glide.with(context).load(restaurant.image).placeholder(R.mipmap.ic_launcher).into(holder.restaurantImageView);
+        Glide.with(activity).load(restaurant.image).placeholder(R.mipmap.ic_launcher).into(holder.restaurantImageView);
 
         holder.view.setOnClickListener(new View.OnClickListener()
         {
@@ -105,28 +107,41 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
 
     private void onRestaurantItemClicked(RestaurantContent restaurant)
     {
-        if (context == null)
+        if (activity == null)
             return;
-        context.startActivity(RestaurantsDetailsActivity.getIntent(context, location, restaurant.id));
+        logListItemClicked();
+        activity.startActivity(RestaurantsDetailsActivity.getIntent(activity, location, restaurant.id));
+    }
+
+    private void logListItemClicked() {
+        if (activity == null) {
+            return;
+        }
+
+        ((AnalyticsApplication) activity.getApplication()).getDefaultTracker().
+                send(new HitBuilders.EventBuilder()
+                .setCategory("Action")
+                .setAction("RestaurantListItemClicked")
+                .build());
     }
 
     private void setName(ViewHolder holder, RestaurantContent restaurant)
     {
         holder.nameTextView.setText(restaurant.name);
-        if (context != null)
+        if (activity != null)
         {
             GuiUtils.highlightTextInTextView(holder.nameTextView,
                                              nameSearchText,
-                                             ContextCompat.getColor(context, R.color.colorAccent));
+                                             ContextCompat.getColor(activity, R.color.colorAccent));
         }
     }
 
     private void setDistance(ViewHolder holder, RestaurantContent restaurant)
     {
-        if (location != null && context != null)
+        if (location != null && activity != null)
         {
             String distance = String.valueOf(Math.floor(restaurant.getDistanceFrom(location) / 10) / 100);
-            holder.distanceTextView.setText(context.getString(R.string.distance, distance));
+            holder.distanceTextView.setText(activity.getString(R.string.distance, distance));
         }
     }
 

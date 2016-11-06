@@ -20,9 +20,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.avielniego.openhvr.R;
-import com.avielniego.openhvr.entities.RestaurantContent;
 import com.avielniego.openhvr.data.storedData.RestaurantsLoader;
-import com.avielniego.openhvr.location.LocationPermissionVerifier;
+import com.avielniego.openhvr.entities.RestaurantContent;
+import com.avielniego.openhvr.ui.analytics.AnalyticsApplication;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
@@ -47,6 +49,7 @@ public class RestaurantListFragment extends Fragment
     private TextView locationFilterView;
     @Nullable private Place chosenPlace;
     private View cancelLocationFilter;
+    Tracker tracker;
 
     public static RestaurantListFragment newInstance()
     {
@@ -61,7 +64,7 @@ public class RestaurantListFragment extends Fragment
     {
         super.onActivityCreated(savedInstanceState);
         launchRestaurantLoader();
-        adapter.setContext(getContext());
+        adapter.setActivity(getActivity());
     }
 
     private void launchRestaurantLoader()
@@ -97,6 +100,7 @@ public class RestaurantListFragment extends Fragment
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        tracker = ((AnalyticsApplication) getActivity().getApplication()).getDefaultTracker();
         setHasOptionsMenu(true);
     }
 
@@ -173,9 +177,21 @@ public class RestaurantListFragment extends Fragment
             @Override
             public void onClick(View view)
             {
-                tryLaunchingPlaceAutocomplete();
+                onLocationFilterViewClicked();
             }
         });
+    }
+
+    private void onLocationFilterViewClicked() {
+        logAction("LocationFilterViewClicked");
+        tryLaunchingPlaceAutocomplete();
+    }
+
+    private void logAction(String actionName) {
+        tracker.send(new HitBuilders.EventBuilder()
+                .setCategory("Action")
+                .setAction(actionName)
+                .build());
     }
 
     private void disableLocationFilter()
@@ -196,9 +212,8 @@ public class RestaurantListFragment extends Fragment
             Intent intent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY).build(getActivity());
             disableLocationFilter();
             startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
-        } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e)
+        } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException ignored)
         {
-            // TODO: Handle the error.
         }
     }
 
@@ -242,9 +257,14 @@ public class RestaurantListFragment extends Fragment
             @Override
             public void onClick(View view)
             {
-                openFilterTypesDialog();
+                onFilterCategoryViewClicked();
             }
         });
+    }
+
+    private void onFilterCategoryViewClicked() {
+        logAction("FilterCategoryViewClicked");
+        openFilterTypesDialog();
     }
 
     private void openFilterTypesDialog()

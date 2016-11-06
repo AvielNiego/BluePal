@@ -39,7 +39,7 @@
     <string name="list_tab_name">LIST</string>
     <string name="map_tab_name">MAP</string>
 
-    <string name="banner_ad_unit_id_main_activity" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
-    <string name="banner_ad_unit_id_details_activity" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="banner_ad_unit_id_main_activity" translatable="false">ca-app-pub-7169359416051111/9745761384</string>
+    <string name="banner_ad_unit_id_details_activity" translatable="false">ca-app-pub-7169359416051111/2222494582</string>
 
 </resources>

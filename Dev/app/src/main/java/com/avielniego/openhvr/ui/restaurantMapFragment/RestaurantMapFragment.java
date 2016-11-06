@@ -2,13 +2,11 @@ package com.avielniego.openhvr.ui.restaurantMapFragment;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +14,11 @@ import android.view.ViewGroup;
 import com.avielniego.openhvr.R;
 import com.avielniego.openhvr.data.storedData.RestaurantsLoader;
 import com.avielniego.openhvr.entities.RestaurantContent;
+import com.avielniego.openhvr.ui.analytics.AnalyticsApplication;
 import com.avielniego.openhvr.ui.restaurantDetails.RestaurantsDetailsActivity;
 import com.avielniego.openhvr.ui.restaurantMapFragment.googleMapsClusterMarker.RestaurantClusterRenderer;
 import com.avielniego.openhvr.ui.restaurantMapFragment.googleMapsClusterMarker.RestaurantsClusterMarker;
+import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -71,12 +71,17 @@ public class RestaurantMapFragment extends Fragment {
         });
     }
 
+    private void initMap() {
+        try {
+            MapsInitializer.initialize(getActivity().getApplicationContext());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private void onMapReady(GoogleMap mMap) {
         googleMap = mMap;
-        clusterManager = new ClusterManager<>(getContext(), googleMap);
-        clusterManager.setRenderer(new RestaurantClusterRenderer(getContext(), mMap, clusterManager));
-        googleMap.setOnCameraIdleListener(clusterManager);
-        googleMap.setOnMarkerClickListener(clusterManager);
+        initClusterMarkerManager();
         launchRestaurantLoader();
         moveCamera();
         googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
@@ -87,9 +92,25 @@ public class RestaurantMapFragment extends Fragment {
         });
     }
 
+    private void initClusterMarkerManager() {
+        clusterManager = new ClusterManager<>(getContext(), googleMap);
+        clusterManager.setRenderer(new RestaurantClusterRenderer(getContext(), googleMap, clusterManager));
+        googleMap.setOnCameraIdleListener(clusterManager);
+        googleMap.setOnMarkerClickListener(clusterManager);
+    }
+
     private void onInfoWindowClicked(Marker marker) {
         RestaurantContent restaurant = (RestaurantContent) marker.getTag();
+        logInfoWindowClick();
         getContext().startActivity(RestaurantsDetailsActivity.getIntent(getContext(), location, restaurant.id));
+    }
+
+    private void logInfoWindowClick() {
+        ((AnalyticsApplication) getActivity().getApplication()).getDefaultTracker().
+                send(new HitBuilders.EventBuilder()
+                .setCategory("Action")
+                .setAction("MarkerInfoWindowClick")
+                .build());
     }
 
     private void moveCamera() {
@@ -114,14 +135,6 @@ public class RestaurantMapFragment extends Fragment {
         } else {
             CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(location.getLatitude(), location.getLongitude())).zoom(12).build();
             googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-        }
-    }
-
-    private void initMap() {
-        try {
-            MapsInitializer.initialize(getActivity().getApplicationContext());
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 

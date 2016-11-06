@@ -14,9 +14,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.avielniego.openhvr.R;
-import com.avielniego.openhvr.location.LocationUtils;
 import com.avielniego.openhvr.entities.RestaurantContent;
+import com.avielniego.openhvr.location.LocationUtils;
+import com.avielniego.openhvr.ui.analytics.AnalyticsApplication;
 import com.bumptech.glide.Glide;
+import com.google.android.gms.analytics.HitBuilders;
 
 public class RestaurantDetailsFragment extends Fragment
 {
@@ -111,13 +113,26 @@ public class RestaurantDetailsFragment extends Fragment
             @Override
             public void onClick(View view)
             {
-                sandToWebsite(restaurant);
+                onWebsiteActionClicked(restaurant);
             }
         });
     }
 
-    private void sandToWebsite(RestaurantContent restaurant)
+    private void onWebsiteActionClicked(RestaurantContent restaurant)
     {
+        logAction("GoToWebsiteAction");
+        sendToWebsite(restaurant);
+    }
+
+    private void logAction(String actionName) {
+        ((AnalyticsApplication) getActivity().getApplication()).getDefaultTracker()
+                .send(new HitBuilders.EventBuilder()
+                        .setCategory("Action")
+                        .setAction(actionName)
+                        .build());
+    }
+
+    private void sendToWebsite(RestaurantContent restaurant) {
         String url = restaurant.website;
         if (!url.startsWith("http://") && !url.startsWith("https://"))
             url = "http://" + url;
@@ -132,9 +147,14 @@ public class RestaurantDetailsFragment extends Fragment
             @Override
             public void onClick(View view)
             {
-                startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + restaurant.phone)));
+                onCallActionClicked(restaurant);
             }
         });
+    }
+
+    private void onCallActionClicked(RestaurantContent restaurant) {
+        logAction("CallToRestaurantAction");
+        startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + restaurant.phone)));
     }
 
     private void setName(RestaurantContent restaurant)
@@ -154,11 +174,16 @@ public class RestaurantDetailsFragment extends Fragment
             @Override
             public void onClick(View view)
             {
-                LocationUtils.startNavigationActivity(getContext(),
-                                                      restaurant.address + ", " + restaurant.city,
-                                                      restaurant.getLocation());
+                onNavigationActionClicked(restaurant);
             }
         });
+    }
+
+    private void onNavigationActionClicked(RestaurantContent restaurant) {
+        logAction("NavigationAction");
+        LocationUtils.startNavigationActivity(getContext(),
+                                              restaurant.address + ", " + restaurant.city,
+                                              restaurant.getLocation());
     }
 
     private void setDistance(ViewHolder holder, RestaurantContent restaurant)
