@@ -3,7 +3,6 @@ package com.avielniego.openhvr.alerts;
 import android.app.IntentService;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,9 +13,9 @@ import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
 
 import com.avielniego.openhvr.R;
-import com.avielniego.openhvr.data.storedData.RestaurantContract.RestaurantEntry;
 import com.avielniego.openhvr.entities.RestaurantContent;
 import com.avielniego.openhvr.ui.main.MainActivity;
+import com.avielniego.openhvr.ui.newRestaurants.NewRestaurantsActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,20 +47,20 @@ public class NewRestaurantAlert{
         return context.getSharedPreferences(context.getString(R.string.content_authority), Context.MODE_PRIVATE);
     }
 
-    public NewRestaurantAlert(Context context, List<RestaurantContent> oldRestaurants, ContentValues[] newRestaurantContentValues) {
+    public NewRestaurantAlert(Context context, List<RestaurantContent> oldRestaurants, List<RestaurantContent> newRestaurantContentValues) {
         this.context = context;
         this.oldRestaurants = oldRestaurants;
-        parseContentValues(newRestaurantContentValues);
+        this.newRestaurants = newRestaurantContentValues;
     }
 
     public void alert() {
         if (oldRestaurants.isEmpty() || !isNotificationsAllowed(context))
             return;
 
-        alertAddedRestaurants(getAddedRestaurants());
+        alertNewRestaurants(getAddedRestaurants());
     }
 
-    private void alertAddedRestaurants(List<RestaurantContent> addedRestaurants) {
+    private void alertNewRestaurants(List<RestaurantContent> addedRestaurants) {
         if (addedRestaurants.isEmpty())
             return;
 
@@ -70,7 +69,7 @@ public class NewRestaurantAlert{
                 .setContentTitle(context.getString(R.string.new_restaurants))
                 .setContentText(context.getString(R.string.number_new_restaurants, addedRestaurants.size()))
                 .setStyle(getInboxStyle(addedRestaurants))
-                .setContentIntent(getPendingIntent())
+                .setContentIntent(getPendingIntent(addedRestaurants))
                 .setNumber(addedRestaurants.size())
                 .setTicker(context.getString(R.string.number_new_restaurants, addedRestaurants.size()))
                 .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
@@ -115,42 +114,20 @@ public class NewRestaurantAlert{
         return addedRestaurants;
     }
 
-    private PendingIntent getPendingIntent() {
-        Intent resultIntent = new Intent(context, MainActivity.class);
+    private PendingIntent getPendingIntent(List<RestaurantContent> addedRestaurants) {
+        Intent resultIntent = NewRestaurantsActivity.newIntent(context, getAddedRestaurantsIds(addedRestaurants));
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
         stackBuilder.addParentStack(MainActivity.class);
         stackBuilder.addNextIntent(resultIntent);
         return stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
-    private void parseContentValues(ContentValues[] movieContentValues) {
-        for (ContentValues movieContentValue : movieContentValues) {
-            newRestaurants.add(parseMovieContentValuesToRestaurant(movieContentValue));
+    private ArrayList<Integer> getAddedRestaurantsIds(List<RestaurantContent> addedRestaurants) {
+        ArrayList<Integer> ids = new ArrayList<>();
+        for (RestaurantContent restaurant : addedRestaurants) {
+            ids.add(restaurant.id);
         }
-    }
-
-    private RestaurantContent parseMovieContentValuesToRestaurant(ContentValues movieContentValue) {
-        RestaurantContent restaurantContent = new RestaurantContent();
-
-        restaurantContent.address = movieContentValue.getAsString(RestaurantEntry.COLUMN_RESTAURANT_ADDRESS);
-        restaurantContent.area = movieContentValue.getAsString(RestaurantEntry.COLUMN_RESTAURANT_AREA);
-        restaurantContent.category = movieContentValue.getAsString(RestaurantEntry.COLUMN_RESTAURANT_CATEGORY);
-        restaurantContent.city = movieContentValue.getAsString(RestaurantEntry.COLUMN_RESTAURANT_CITY);
-        restaurantContent.handicap = movieContentValue.getAsString(RestaurantEntry.COLUMN_RESTAURANT_HANDICAP);
-        restaurantContent.desc = movieContentValue.getAsString(RestaurantEntry.COLUMN_RESTAURANT_DESC);
-        restaurantContent.kosher = movieContentValue.getAsString(RestaurantEntry.COLUMN_RESTAURANT_IS_KOSHER);
-        restaurantContent.image = movieContentValue.getAsString(RestaurantEntry.COLUMN_RESTAURANT_IMAGE);
-        restaurantContent.name  = movieContentValue.getAsString(RestaurantEntry.COLUMN_RESTAURANT_NAME);
-        restaurantContent.phone = movieContentValue.getAsString(RestaurantEntry.COLUMN_RESTAURANT_PHONE);
-        restaurantContent.type = movieContentValue.getAsString(RestaurantEntry.COLUMN_RESTAURANT_TYPE);
-        restaurantContent.website = movieContentValue.getAsString(RestaurantEntry.COLUMN_RESTAURANT_WEBSITE);
-        restaurantContent.weekOpenHours = movieContentValue.getAsString(RestaurantEntry.COLUMN_RESTAURANT_WEEK_OPEN_HOURS);
-        restaurantContent.fridayOpenHours = movieContentValue.getAsString(RestaurantEntry.COLUMN_RESTAURANT_FRIDAY_OPEN_HOURS);
-        restaurantContent.satOpenHours = movieContentValue.getAsString(RestaurantEntry.COLUMN_RESTAURANT_SAT_OPEN_HOURS);
-        restaurantContent.latitude = movieContentValue.getAsDouble(RestaurantEntry.COLUMN_RESTAURANT_LATITUDE);
-        restaurantContent.longitude = movieContentValue.getAsDouble(RestaurantEntry.COLUMN_RESTAURANT_LONGITUDE);
-
-        return restaurantContent;
+        return ids;
     }
 
     public static class ForbidNotificationsService extends IntentService{

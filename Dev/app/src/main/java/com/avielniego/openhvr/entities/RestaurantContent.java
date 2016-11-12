@@ -2,6 +2,8 @@ package com.avielniego.openhvr.entities;
 
 import android.content.Context;
 import android.location.Location;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import com.avielniego.openhvr.R;
@@ -11,7 +13,7 @@ import java.util.Calendar;
 import java.util.List;
 
 public class RestaurantContent {
-    public long id;
+    public int id;
     public String image = "";
     public String name = "";
     public String desc = "";

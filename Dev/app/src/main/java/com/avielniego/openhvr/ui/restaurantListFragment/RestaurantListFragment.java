@@ -39,6 +39,7 @@ public class RestaurantListFragment extends Fragment
     private static final String LOG_TAG = RestaurantListFragment.class.getSimpleName();
 
     private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 0;
+    public static final String RESTAURANTS_IDS_ARG_KEY = "RESTAURANTS_IDS_ARG_KEY";
 
     private RestaurantListAdapter adapter = new RestaurantListAdapter();
 
@@ -52,8 +53,14 @@ public class RestaurantListFragment extends Fragment
 
     public static RestaurantListFragment newInstance()
     {
+        return newInstance(null);
+    }
+
+    public static RestaurantListFragment newInstance(@Nullable ArrayList<Integer> restaurantsIds)
+    {
         RestaurantListFragment fragment = new RestaurantListFragment();
         Bundle args = new Bundle();
+        args.putIntegerArrayList(RESTAURANTS_IDS_ARG_KEY, restaurantsIds);
         fragment.setArguments(args);
         return fragment;
     }
@@ -62,11 +69,11 @@ public class RestaurantListFragment extends Fragment
     public void onActivityCreated(@Nullable Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
-        launchRestaurantLoader();
+        launchRestaurantLoader(getArguments().getIntegerArrayList(RESTAURANTS_IDS_ARG_KEY));
         adapter.setActivity(getActivity());
     }
 
-    private void launchRestaurantLoader()
+    private void launchRestaurantLoader(@Nullable List<Integer> restaurantsIds)
     {
         RestaurantsLoader restaurantsLoader = new RestaurantsLoader(getContext(), new RestaurantsLoader.RestaurantLoadListener()
         {
@@ -76,6 +83,7 @@ public class RestaurantListFragment extends Fragment
                 RestaurantListFragment.this.onRestaurantLoaded(restaurants);
             }
         });
+        restaurantsLoader.loadSpecificRestaurants(restaurantsIds);
         getLoaderManager().initLoader(RestaurantsLoader.RESTAURANT_LOADER_ID, null, restaurantsLoader);
     }
 

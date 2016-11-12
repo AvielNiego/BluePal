@@ -102,7 +102,7 @@ public class RestaurantLoader implements LoaderManager.LoaderCallbacks<Cursor>
     {
         data.moveToFirst();
         RestaurantContent content = new RestaurantContent();
-        content.id = data.getLong(RESTAURANT_ID_COLUMN_INDEX);
+        content.id = data.getInt(RESTAURANT_ID_COLUMN_INDEX);
         content.image = data.getString(COLUMN_RESTAURANT_IMAGE);
         content.name = data.getString(RESTAURANT_NAME_COLUMN_INDEX);
         content.desc = data.getString(COLUMN_RESTAURANT_DESC);

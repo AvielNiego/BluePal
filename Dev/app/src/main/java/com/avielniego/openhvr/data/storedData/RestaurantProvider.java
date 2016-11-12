@@ -89,7 +89,7 @@ public class RestaurantProvider extends ContentProvider
                                                                                          null,
                                                                                          contentValues,
                                                                                          SQLiteDatabase.CONFLICT_REPLACE);
-                return RestaurantContract.RestaurantEntry.buildRestaurantUri(_id);
+                return RestaurantContract.RestaurantEntry.buildRestaurantUri((int) _id);
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }

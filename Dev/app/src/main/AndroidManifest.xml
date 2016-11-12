@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.avielniego.openhvr"
-          xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.avielniego.openhvr">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <!-- Permissions required by the sync adapter -->
-    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS"/>
-    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS"/>
-    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:name=".ui.analytics.AnalyticsApplication"
@@ -18,65 +18,75 @@
         android:label="@string/app_name"
         android:supportsRtl="false"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.main.MainActivity"
-            android:theme="@style/NoActionBarAppTheme"
-            android:screenOrientation="portrait">
+        <activity
+            android:name=".ui.main.MainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBarAppTheme">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <service
             android:name=".data.loadData.RestaurantDataDownloadService"
-            android:enabled="true"/>
-
+            android:enabled="true" />
         <service
             android:name=".alerts.NewRestaurantAlert$ForbidNotificationsService"
-            android:enabled="true"/>
+            android:enabled="true" />
 
         <!-- SyncAdapter's dummy authentication service -->
         <service android:name=".data.sync.OpenHvrAuthenticatorService">
             <intent-filter>
-                <action android:name="android.accounts.AccountAuthenticator"/>
+                <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
 
             <meta-data
                 android:name="android.accounts.AccountAuthenticator"
-                android:resource="@xml/authenticator"/>
+                android:resource="@xml/authenticator" />
         </service>
         <!-- The SyncAdapter service -->
         <service
             android:name=".data.sync.OpenHvrSyncService"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.content.SyncAdapter"/>
+                <action android:name="android.content.SyncAdapter" />
             </intent-filter>
 
             <meta-data
                 android:name="android.content.SyncAdapter"
-                android:resource="@xml/syncadapter"/>
+                android:resource="@xml/syncadapter" />
         </service>
 
         <provider
             android:name=".data.storedData.RestaurantProvider"
             android:authorities="@string/content_authority"
             android:exported="false"
-            android:syncable="true"/>
+            android:syncable="true" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBLiCBdG3S_qqoHJJDzNSnyOvEq_aKfjX8"/>
+            android:value="AIzaSyBLiCBdG3S_qqoHJJDzNSnyOvEq_aKfjX8" />
 
         <activity android:name=".ui.restaurantDetails.RestaurantsDetailsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.main.MainActivity"/>
+                android:value=".ui.main.MainActivity" />
         </activity>
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="d7bd22da75e30bdac6dfdee8d22dd888bb81c5b4" />
+
+        <activity
+            android:name=".ui.newRestaurants.NewRestaurantsActivity"
+            android:label="@string/title_activity_new_restaurants"
+            android:parentActivityName=".ui.main.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.avielniego.openhvr.ui.main.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

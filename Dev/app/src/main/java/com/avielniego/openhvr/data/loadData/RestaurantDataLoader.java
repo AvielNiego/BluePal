@@ -34,12 +34,17 @@ public class RestaurantDataLoader
     public void loadToDB()
     {
         ContentValues[] restaurantsContentValues = parseJson();
-        new NewRestaurantAlert(context, getOldRestaurants(), restaurantsContentValues).alert();
+        List<RestaurantContent> oldRestaurants = getCurrentRestaurants();
+        replaceRestaurants(restaurantsContentValues);
+        new NewRestaurantAlert(context, oldRestaurants, getCurrentRestaurants()).alert();
+    }
+
+    private void replaceRestaurants(ContentValues[] restaurantsContentValues) {
         context.getContentResolver().delete(RestaurantEntry.CONTENT_URI, null, null);
         context.getContentResolver().bulkInsert(RestaurantEntry.CONTENT_URI, restaurantsContentValues);
     }
 
-    private List<RestaurantContent> getOldRestaurants() {
+    private List<RestaurantContent> getCurrentRestaurants() {
         Cursor query = context.getContentResolver().query(RestaurantEntry.CONTENT_URI, RestaurantCursorParser.PROJECTION, null, null, null);
         List<RestaurantContent> restaurantContents = new RestaurantCursorParser().parseMany(query);
         if (query != null) {

@@ -26,7 +26,7 @@ public class RestaurantsDetailsActivity extends AppCompatActivity
 
     private AnalyticsLogger logger;
 
-    public static Intent getIntent(Context context, @Nullable Location location, long restaurantId)
+    public static Intent getIntent(Context context, @Nullable Location location, int restaurantId)
     {
         Intent intent = new Intent(context, RestaurantsDetailsActivity.class)
                 .setData(RestaurantContract.RestaurantEntry.buildRestaurantUri(restaurantId));

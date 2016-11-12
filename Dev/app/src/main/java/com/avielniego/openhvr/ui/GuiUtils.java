@@ -6,6 +6,8 @@ import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.widget.TextView;
 
+import java.util.List;
+
 public class GuiUtils
 {
     public static void highlightTextInTextView(TextView textView, @Nullable String textToHighlight, int color)
@@ -29,5 +31,14 @@ public class GuiUtils
         }
 
         textView.setText(wordToSpan);
+    }
+
+    public static String join(List<Integer> integers, String separator) {
+        StringBuilder joins = new StringBuilder();
+        for (int i = 0; i < integers.size() - 1; i++) {
+            joins.append(integers.get(i)).append(separator);
+        }
+        joins.append(integers.get(integers.size() - 1));
+        return joins.toString();
     }
 }

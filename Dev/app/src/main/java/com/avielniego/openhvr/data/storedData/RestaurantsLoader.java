@@ -4,14 +4,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 
 import com.avielniego.openhvr.data.loadData.RestaurantCursorParser;
 import com.avielniego.openhvr.data.loadData.RestaurantDataDownloadService;
-import com.avielniego.openhvr.data.storedData.RestaurantContract;
 import com.avielniego.openhvr.entities.RestaurantContent;
+import com.avielniego.openhvr.ui.GuiUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -24,11 +25,39 @@ public class RestaurantsLoader implements LoaderManager.LoaderCallbacks<Cursor>
     private Context       context;
     private RestaurantLoadListener restaurantLoadListener;
     private boolean isFirstLoadTry = true;
+    private String selection;
+    private String[] selectionArgs;
 
     public RestaurantsLoader(Context context, RestaurantLoadListener restaurantLoadListener)
     {
         this.context = context;
         this.restaurantLoadListener = restaurantLoadListener;
+    }
+
+    public void loadSpecificRestaurants(@Nullable List<Integer> restaurantsIds)
+    {
+        if (restaurantsIds == null) {
+            return;
+        }
+        selection = RestaurantContract.RestaurantEntry._ID + " in (" + makePlaceHolders(restaurantsIds.size()) + ")";
+        selectionArgs = toStringArray(restaurantsIds);
+    }
+
+    private String makePlaceHolders(int size) {
+        StringBuilder placeHolders = new StringBuilder();
+        for (int i = 0; i < size - 1; i++) {
+            placeHolders.append("? ,");
+        }
+        placeHolders.append("?");
+        return placeHolders.toString();
+    }
+
+    private String[] toStringArray(List<Integer> restaurantsIds) {
+        String[] ids = new String[restaurantsIds.size()];
+        for (int i = 0; i < restaurantsIds.size(); i++) {
+            ids[i] = String.valueOf(restaurantsIds.get(i));
+        }
+        return ids;
     }
 
     @Override
@@ -37,7 +66,7 @@ public class RestaurantsLoader implements LoaderManager.LoaderCallbacks<Cursor>
         switch (id)
         {
             case RESTAURANT_LOADER_ID:
-                return new CursorLoader(context, RestaurantContract.RestaurantEntry.CONTENT_URI, RestaurantCursorParser.PROJECTION, null, null, null);
+                return new CursorLoader(context, RestaurantContract.RestaurantEntry.CONTENT_URI, RestaurantCursorParser.PROJECTION, selection, selectionArgs, null);
             default:
                 return null;
         }
