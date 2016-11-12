@@ -25,8 +25,6 @@ public class MainPagerAdapter extends FragmentPagerAdapter
         this.activity = activity;
     }
 
-
-
     @Override
     public Fragment getItem(int position) {
         switch (position)

@@ -21,12 +21,11 @@ import com.avielniego.openhvr.alerts.NewRestaurantAlert;
 import com.avielniego.openhvr.data.sync.OpenHvrSyncAdapter;
 import com.avielniego.openhvr.location.LocationPermissionVerifier;
 import com.avielniego.openhvr.ui.analytics.AnalyticsApplication;
+import com.avielniego.openhvr.ui.analytics.AnalyticsLogger;
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -38,7 +37,7 @@ public class MainActivity extends AppCompatActivity
     public static final String TOGGLE_NEW_RESTAURANT_NOTIFICATION_OFF_LOG = "ToggleNewRestaurantNotificationOff";
 
     private MainPagerAdapter mainPagerAdapter;
-    private Tracker tracker;
+    private AnalyticsLogger logger;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -46,7 +45,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-        tracker = ((AnalyticsApplication) getApplication()).getDefaultTracker();
+        logger = new AnalyticsLogger((AnalyticsApplication) getApplication());
         initServices();
         initViewPager();
         getLocation();
@@ -79,8 +78,7 @@ public class MainActivity extends AppCompatActivity
         viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
-                tracker.setScreenName("Tab~" + mainPagerAdapter.getItemName(position));
-                tracker.send(new HitBuilders.ScreenViewBuilder().build());
+                logger.logTab(mainPagerAdapter.getItemName(position));
             }
         });
     }
@@ -177,10 +175,9 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void onNotifyNewRestaurantsMenuCheck(MenuItem item) {
-        boolean isChecked = item.isChecked();
-        logAction(isChecked ? TOGGLE_NEW_RESTAURANT_NOTIFICATION_ON_LOG : TOGGLE_NEW_RESTAURANT_NOTIFICATION_OFF_LOG);
-        item.setChecked(!isChecked);
-        toggleNotification(isChecked);
+        logger.logAction(item.isChecked() ? TOGGLE_NEW_RESTAURANT_NOTIFICATION_ON_LOG : TOGGLE_NEW_RESTAURANT_NOTIFICATION_OFF_LOG);
+        item.setChecked(!item.isChecked());
+        toggleNotification(item.isChecked());
     }
 
     private void toggleNotification(boolean isChecked) {
@@ -188,12 +185,5 @@ public class MainActivity extends AppCompatActivity
             NewRestaurantAlert.allowNotifications(this);
         else
             NewRestaurantAlert.forbidNotifications(this);
-    }
-
-    private void logAction(String actionName) {
-        tracker.send(new HitBuilders.EventBuilder()
-                .setCategory("Action")
-                .setAction(actionName)
-                .build());
     }
 }

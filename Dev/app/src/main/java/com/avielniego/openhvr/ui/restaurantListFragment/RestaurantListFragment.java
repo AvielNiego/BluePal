@@ -23,8 +23,7 @@ import com.avielniego.openhvr.R;
 import com.avielniego.openhvr.data.storedData.RestaurantsLoader;
 import com.avielniego.openhvr.entities.RestaurantContent;
 import com.avielniego.openhvr.ui.analytics.AnalyticsApplication;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
+import com.avielniego.openhvr.ui.analytics.AnalyticsLogger;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
@@ -49,7 +48,7 @@ public class RestaurantListFragment extends Fragment
     private TextView locationFilterView;
     @Nullable private Place chosenPlace;
     private View cancelLocationFilter;
-    Tracker tracker;
+    AnalyticsLogger logger;
 
     public static RestaurantListFragment newInstance()
     {
@@ -100,7 +99,7 @@ public class RestaurantListFragment extends Fragment
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        tracker = ((AnalyticsApplication) getActivity().getApplication()).getDefaultTracker();
+        logger = new AnalyticsLogger((AnalyticsApplication) getActivity().getApplication());
         setHasOptionsMenu(true);
     }
 
@@ -183,15 +182,8 @@ public class RestaurantListFragment extends Fragment
     }
 
     private void onLocationFilterViewClicked() {
-        logAction("LocationFilterViewClicked");
+        logger.logAction(R.id.location_filter);
         tryLaunchingPlaceAutocomplete();
-    }
-
-    private void logAction(String actionName) {
-        tracker.send(new HitBuilders.EventBuilder()
-                .setCategory("Action")
-                .setAction(actionName)
-                .build());
     }
 
     private void disableLocationFilter()
@@ -263,7 +255,7 @@ public class RestaurantListFragment extends Fragment
     }
 
     private void onFilterCategoryViewClicked() {
-        logAction("FilterCategoryViewClicked");
+        logger.logAction(R.id.category_filter_combo_box);
         openFilterTypesDialog();
     }
 

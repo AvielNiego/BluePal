@@ -11,13 +11,12 @@ import android.support.v7.app.AppCompatActivity;
 import com.avielniego.openhvr.R;
 import com.avielniego.openhvr.data.storedData.RestaurantContract;
 import com.avielniego.openhvr.ui.analytics.AnalyticsApplication;
+import com.avielniego.openhvr.ui.analytics.AnalyticsLogger;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 
-import static android.R.attr.name;
 import static com.avielniego.openhvr.ui.main.MainActivity.AD_MOD_APP_ID;
 
 public class RestaurantsDetailsActivity extends AppCompatActivity
@@ -25,7 +24,7 @@ public class RestaurantsDetailsActivity extends AppCompatActivity
     public static final String LONG_ARG = "LONG_ARG";
     public static final String LAT_ARG = "LAT_ARG";
 
-    private Tracker tracker;
+    private AnalyticsLogger logger;
 
     public static Intent getIntent(Context context, @Nullable Location location, long restaurantId)
     {
@@ -45,14 +44,13 @@ public class RestaurantsDetailsActivity extends AppCompatActivity
         setToolbar();
         addAds();
         addFragment();
-        tracker = ((AnalyticsApplication) getApplication()).getDefaultTracker();
+        logger = new AnalyticsLogger((AnalyticsApplication) getApplication());
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        tracker.setScreenName("Activity~" + RestaurantsDetailsActivity.class.getSimpleName());
-        tracker.send(new HitBuilders.ScreenViewBuilder().build());
+        logger.logScreen(RestaurantsDetailsActivity.class.getSimpleName());
     }
 
     private void addAds() {
