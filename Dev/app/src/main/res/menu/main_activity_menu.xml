@@ -6,4 +6,9 @@
         android:checkable="true"
         android:title="@string/notify_new_restaurants"
         app:showAsAction="collapseActionView"/>
+
+    <item
+        android:id="@+id/action_about"
+        android:title="@string/about"
+        app:showAsAction="collapseActionView"/>
 </menu>

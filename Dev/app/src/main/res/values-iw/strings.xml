@@ -25,4 +25,7 @@
     <string name="list_tab_name">רשימה</string>
     <string name="map_tab_name">מפה</string>
     <string name="choose_place">בחר מקום</string>
+    <string name="show_new_restaurants">הצג מסעדות חדשות</string>
+    <string name="title_activity_new_restaurants">מסעדות חדשות</string>
+    <string name="about">אודות</string>
 </resources>

@@ -318,21 +318,21 @@
     </item>
     <item
         is-multidex="false"
-        jar="C:\Develop\OpenHvr\Dev\app\build\intermediates\exploded-aar\com.google.maps.android\android-maps-utils\0.4.4\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="23.0.3"
-        sha1="6f57b76211a1d7b0c1f18873af59faad95664681">
-        <dex dex="C:\Develop\OpenHvr\Dev\app\build\intermediates\pre-dexed\debug\com.google.maps.android-android-maps-utils-0.4.4_33094609d372e1490737aac69fb4d1d1571cb7ee.jar" />
-    </item>
-    <item
-        is-multidex="false"
         jar="C:\Develop\OpenHvr\Dev\app\build\intermediates\exploded-aar\com.android.support\support-fragment\25.0.0\jars\libs\internal_impl-25.0.0.jar"
         jumboMode="false"
         optimize="true"
         revision="23.0.3"
         sha1="ee5faf4dee5b6a4364bf51587871047dde7c703a">
         <dex dex="C:\Develop\OpenHvr\Dev\app\build\intermediates\pre-dexed\debug\internal_impl-25.0.0_a765dbcaa57d9f025831a84b2f9357531b0f98de.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Develop\OpenHvr\Dev\app\build\intermediates\exploded-aar\com.google.maps.android\android-maps-utils\0.4.4\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.3"
+        sha1="6f57b76211a1d7b0c1f18873af59faad95664681">
+        <dex dex="C:\Develop\OpenHvr\Dev\app\build\intermediates\pre-dexed\debug\com.google.maps.android-android-maps-utils-0.4.4_33094609d372e1490737aac69fb4d1d1571cb7ee.jar" />
     </item>
     <item
         is-multidex="false"

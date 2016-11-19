@@ -21,6 +21,7 @@ import com.avielniego.openhvr.R;
 import com.avielniego.openhvr.alerts.NewRestaurantAlert;
 import com.avielniego.openhvr.data.sync.OpenHvrSyncAdapter;
 import com.avielniego.openhvr.location.LocationPermissionVerifier;
+import com.avielniego.openhvr.ui.AboutActivity;
 import com.avielniego.openhvr.ui.analytics.AnalyticsApplication;
 import com.avielniego.openhvr.ui.analytics.AnalyticsLogger;
 import com.avielniego.openhvr.ui.newRestaurants.NewRestaurantsActivity;
@@ -174,6 +175,9 @@ public class MainActivity extends AppCompatActivity
         {
             case R.id.action_notify_new_restaurants:
                 onNotifyNewRestaurantsMenuCheck(item);
+                break;
+            case R.id.action_about:
+                startActivity(new Intent(this, AboutActivity.class));
                 break;
         }
         return super.onOptionsItemSelected(item);

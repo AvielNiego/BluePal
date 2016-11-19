@@ -87,6 +87,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.avielniego.openhvr.ui.main.MainActivity" />
         </activity>
+
+        <activity android:name=".ui.AboutActivity"
+            android:label="@string/about"
+            android:parentActivityName=".ui.main.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.avielniego.openhvr.ui.main.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
