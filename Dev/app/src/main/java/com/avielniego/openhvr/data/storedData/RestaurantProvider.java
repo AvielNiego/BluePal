@@ -43,6 +43,15 @@ public class RestaurantProvider extends ContentProvider
     @Override
     public Cursor query(@NonNull Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder)
     {
+        Cursor queryResult = getQueryResult(uri, projection, selection, selectionArgs, sortOrder);
+        if (queryResult != null && getContext() != null)
+        {
+            queryResult.setNotificationUri(getContext().getContentResolver(), uri);
+        }
+        return queryResult;
+    }
+
+    private Cursor getQueryResult(@NonNull Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         switch (uriMatcher.match(uri))
         {
             case RESTAURANT:

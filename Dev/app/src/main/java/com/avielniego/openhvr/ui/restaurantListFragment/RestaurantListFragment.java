@@ -49,7 +49,7 @@ public class RestaurantListFragment extends Fragment
     private TextView locationFilterView;
     @Nullable private Place chosenPlace;
     private View cancelLocationFilter;
-    AnalyticsLogger logger;
+    private AnalyticsLogger logger;
 
     public static RestaurantListFragment newInstance()
     {

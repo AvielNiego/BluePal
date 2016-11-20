@@ -88,7 +88,7 @@
                 android:value="com.avielniego.openhvr.ui.main.MainActivity" />
         </activity>
 
-        <activity android:name=".ui.AboutActivity"
+        <activity android:name=".ui.about.AboutActivity"
             android:label="@string/about"
             android:parentActivityName=".ui.main.MainActivity">
             <meta-data

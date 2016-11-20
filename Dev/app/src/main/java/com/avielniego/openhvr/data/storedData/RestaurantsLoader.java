@@ -12,7 +12,6 @@ import android.support.v4.content.Loader;
 import com.avielniego.openhvr.data.loadData.RestaurantCursorParser;
 import com.avielniego.openhvr.data.loadData.RestaurantDataDownloadService;
 import com.avielniego.openhvr.entities.RestaurantContent;
-import com.avielniego.openhvr.ui.GuiUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;

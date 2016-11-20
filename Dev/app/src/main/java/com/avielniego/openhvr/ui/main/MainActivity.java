@@ -21,17 +21,13 @@ import com.avielniego.openhvr.R;
 import com.avielniego.openhvr.alerts.NewRestaurantAlert;
 import com.avielniego.openhvr.data.sync.OpenHvrSyncAdapter;
 import com.avielniego.openhvr.location.LocationPermissionVerifier;
-import com.avielniego.openhvr.ui.AboutActivity;
+import com.avielniego.openhvr.ui.about.AboutActivity;
 import com.avielniego.openhvr.ui.analytics.AnalyticsApplication;
 import com.avielniego.openhvr.ui.analytics.AnalyticsLogger;
-import com.avielniego.openhvr.ui.newRestaurants.NewRestaurantsActivity;
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
-import com.google.common.collect.Lists;
-
-import java.util.ArrayList;
 
 import io.fabric.sdk.android.Fabric;
 

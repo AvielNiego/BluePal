@@ -1,4 +1,4 @@
-package com.avielniego.openhvr.ui;
+package com.avielniego.openhvr.ui.about;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -9,7 +9,6 @@ import android.view.View;
 import com.avielniego.openhvr.R;
 import com.avielniego.openhvr.ui.analytics.AnalyticsApplication;
 import com.avielniego.openhvr.ui.analytics.AnalyticsLogger;
-import com.avielniego.openhvr.ui.restaurantDetails.RestaurantsDetailsActivity;
 
 public class AboutActivity extends AppCompatActivity {
 
