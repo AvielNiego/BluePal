@@ -58,15 +58,17 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
 
     private void updateRecyclerView()
     {
-        if (recyclerView == null)
-        {
-            return;
-        }
-
         filterRestaurants();
         sortRestaurants();
-        recyclerView.invalidate();
         notifyDataSetChanged();
+        invalidateRecyclerView();
+    }
+
+    private void invalidateRecyclerView() {
+        if (recyclerView != null)
+        {
+            recyclerView.invalidate();
+        }
     }
 
     @Override
@@ -185,6 +187,8 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
 
     public void setLocation(@Nullable Location location)
     {
+        if(location == null)
+            return;
         this.location = location;
         updateRecyclerView();
     }

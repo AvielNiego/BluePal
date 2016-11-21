@@ -2,6 +2,7 @@ package com.avielniego.openhvr.ui.main;
 
 import android.app.Activity;
 import android.location.Location;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -57,8 +58,10 @@ public class MainPagerAdapter extends FragmentPagerAdapter
         }
     }
 
-    public void onLocationReceived(Location location)
+    public void onLocationReceived(@Nullable Location location)
     {
+        if(location == null)
+            return;
         restaurantListFragment.onLocationReceived(location);
         restaurantMapFragment.onLocationReceived(location);
     }

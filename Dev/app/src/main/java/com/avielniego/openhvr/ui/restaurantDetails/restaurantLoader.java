@@ -100,8 +100,10 @@ public class RestaurantLoader implements LoaderManager.LoaderCallbacks<Cursor>
 
     public static RestaurantContent cursorDataToRestaurantContent(Cursor data)
     {
-        data.moveToFirst();
         RestaurantContent content = new RestaurantContent();
+        if (!data.moveToFirst()) {
+            return content;
+        }
         content.id = data.getInt(RESTAURANT_ID_COLUMN_INDEX);
         content.image = data.getString(COLUMN_RESTAURANT_IMAGE);
         content.name = data.getString(RESTAURANT_NAME_COLUMN_INDEX);

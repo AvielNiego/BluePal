@@ -11,6 +11,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
+    <action android:name="android.location.PROVIDERS_CHANGED" />
+
     <application
         android:name=".ui.analytics.AnalyticsApplication"
         android:allowBackup="true"
@@ -58,6 +60,13 @@
                 android:name="android.content.SyncAdapter"
                 android:resource="@xml/syncadapter" />
         </service>
+
+        <receiver android:name=".location.LocationAvailableReceiver">
+            <intent-filter>
+                <action android:name="android.location.PROVIDERS_CHANGED" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
 
         <provider
             android:name=".data.storedData.RestaurantProvider"

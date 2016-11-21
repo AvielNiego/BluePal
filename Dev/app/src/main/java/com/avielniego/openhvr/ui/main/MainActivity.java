@@ -1,8 +1,10 @@
 package com.avielniego.openhvr.ui.main;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -20,6 +22,7 @@ import android.view.MenuItem;
 import com.avielniego.openhvr.R;
 import com.avielniego.openhvr.alerts.NewRestaurantAlert;
 import com.avielniego.openhvr.data.sync.OpenHvrSyncAdapter;
+import com.avielniego.openhvr.location.LocationAvailableReceiver;
 import com.avielniego.openhvr.location.LocationPermissionVerifier;
 import com.avielniego.openhvr.ui.about.AboutActivity;
 import com.avielniego.openhvr.ui.analytics.AnalyticsApplication;
@@ -40,6 +43,7 @@ public class MainActivity extends AppCompatActivity
 
     private MainPagerAdapter mainPagerAdapter;
     private AnalyticsLogger logger;
+    private BroadcastReceiver locationAvailableListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -51,6 +55,23 @@ public class MainActivity extends AppCompatActivity
         initServices();
         initViewPager();
         getLocation();
+        registerLocationAvailableListener();
+    }
+
+    private void registerLocationAvailableListener() {
+        locationAvailableListener = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                getLocation();
+            }
+        };
+        registerReceiver(locationAvailableListener, new IntentFilter(LocationAvailableReceiver.GPS_AVAILABLE));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(locationAvailableListener);
     }
 
     private void initServices() {
