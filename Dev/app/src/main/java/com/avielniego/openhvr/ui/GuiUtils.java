@@ -33,12 +33,4 @@ public class GuiUtils
         textView.setText(wordToSpan);
     }
 
-    public static String join(List<Integer> integers, String separator) {
-        StringBuilder joins = new StringBuilder();
-        for (int i = 0; i < integers.size() - 1; i++) {
-            joins.append(integers.get(i)).append(separator);
-        }
-        joins.append(integers.get(integers.size() - 1));
-        return joins.toString();
-    }
 }

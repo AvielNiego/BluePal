@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.avielniego.openhvr.alerts.NewRestaurantAlert;
+import com.avielniego.openhvr.ui.NewRestaurantAlert;
 import com.avielniego.openhvr.data.storedData.RestaurantContract.RestaurantEntry;
 import com.avielniego.openhvr.entities.RestaurantContent;
 

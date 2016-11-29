@@ -25,7 +25,7 @@ public class LocationPermissionVerifier
     private static final long MONTH                            = WEEK * 4;
     public static final  int  LOCATION_PERMISSION_REQUEST_CODE = 0;
 
-    Activity activity;
+    private Activity activity;
 
 
     public LocationPermissionVerifier(Activity activity)

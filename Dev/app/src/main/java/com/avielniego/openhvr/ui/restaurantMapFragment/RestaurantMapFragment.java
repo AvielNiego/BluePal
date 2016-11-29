@@ -15,10 +15,10 @@ import com.avielniego.openhvr.R;
 import com.avielniego.openhvr.data.storedData.RestaurantsLoader;
 import com.avielniego.openhvr.entities.RestaurantContent;
 import com.avielniego.openhvr.ui.analytics.AnalyticsApplication;
+import com.avielniego.openhvr.ui.analytics.AnalyticsLogger;
 import com.avielniego.openhvr.ui.restaurantDetails.RestaurantsDetailsActivity;
 import com.avielniego.openhvr.ui.restaurantMapFragment.googleMapsClusterMarker.RestaurantClusterRenderer;
 import com.avielniego.openhvr.ui.restaurantMapFragment.googleMapsClusterMarker.RestaurantsClusterMarker;
-import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -34,8 +34,6 @@ import java.util.List;
 public class RestaurantMapFragment extends Fragment {
     public static final LatLng ISRAEL_LAT_LNG = new LatLng(32.004436, 34.787704);
 
-    public RestaurantMapFragment() {
-    }
     public static RestaurantMapFragment newInstance() {
         RestaurantMapFragment fragment = new RestaurantMapFragment();
         Bundle args = new Bundle();
@@ -48,12 +46,16 @@ public class RestaurantMapFragment extends Fragment {
     private Location location;
     private MapView mapView;
     private GoogleMap googleMap;
+    private AnalyticsLogger logger;
+
+    public RestaurantMapFragment() {
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_restaurant_map, container, false);
         createMap(savedInstanceState, rootView);
-
+        logger = new AnalyticsLogger((AnalyticsApplication) getActivity().getApplication());
         return rootView;
     }
 
@@ -101,16 +103,8 @@ public class RestaurantMapFragment extends Fragment {
 
     private void onInfoWindowClicked(Marker marker) {
         RestaurantContent restaurant = (RestaurantContent) marker.getTag();
-        logInfoWindowClick();
+        logger.logAction("MarkerInfoWindowClick");
         getContext().startActivity(RestaurantsDetailsActivity.getIntent(getContext(), location, restaurant.id));
-    }
-
-    private void logInfoWindowClick() {
-        ((AnalyticsApplication) getActivity().getApplication()).getDefaultTracker().
-                send(new HitBuilders.EventBuilder()
-                .setCategory("Action")
-                .setAction("MarkerInfoWindowClick")
-                .build());
     }
 
     private void moveCamera() {
@@ -177,6 +171,7 @@ public class RestaurantMapFragment extends Fragment {
     }
 
     private void onRestaurantLoaded(List<RestaurantContent> restaurants) {
+        clusterManager.clearItems();
         for (RestaurantContent restaurant : restaurants) {
             addMarkerToMap(restaurant);
         }

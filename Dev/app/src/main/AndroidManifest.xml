@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <action android:name="android.location.PROVIDERS_CHANGED" />
 
@@ -35,7 +36,7 @@
             android:name=".data.loadData.RestaurantDataDownloadService"
             android:enabled="true" />
         <service
-            android:name=".alerts.NewRestaurantAlert$ForbidNotificationsService"
+            android:name=".ui.NewRestaurantAlert$ForbidNotificationsService"
             android:enabled="true" />
 
         <!-- SyncAdapter's dummy authentication service -->

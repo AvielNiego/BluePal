@@ -1,4 +1,4 @@
-package com.avielniego.openhvr.alerts;
+package com.avielniego.openhvr.ui;
 
 import android.app.IntentService;
 import android.app.NotificationManager;
@@ -47,10 +47,10 @@ public class NewRestaurantAlert{
         return context.getSharedPreferences(context.getString(R.string.content_authority), Context.MODE_PRIVATE);
     }
 
-    public NewRestaurantAlert(Context context, List<RestaurantContent> oldRestaurants, List<RestaurantContent> newRestaurantContentValues) {
+    public NewRestaurantAlert(Context context, List<RestaurantContent> oldRestaurants, List<RestaurantContent> newRestaurants) {
         this.context = context;
         this.oldRestaurants = oldRestaurants;
-        this.newRestaurants = newRestaurantContentValues;
+        this.newRestaurants = newRestaurants;
     }
 
     public void alert() {
@@ -64,7 +64,7 @@ public class NewRestaurantAlert{
         if (addedRestaurants.isEmpty())
             return;
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context).setSmallIcon(R.mipmap.ic_launcher)
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context).setSmallIcon(R.drawable.ic_launcher_empty)
                 .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))
                 .setContentTitle(context.getString(R.string.new_restaurants))
                 .setContentText(context.getString(R.string.number_new_restaurants, addedRestaurants.size()))

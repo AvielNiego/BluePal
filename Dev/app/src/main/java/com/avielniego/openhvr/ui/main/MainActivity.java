@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,10 +19,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.avielniego.openhvr.R;
-import com.avielniego.openhvr.alerts.NewRestaurantAlert;
 import com.avielniego.openhvr.data.sync.OpenHvrSyncAdapter;
+import com.avielniego.openhvr.location.LocationAdapter;
 import com.avielniego.openhvr.location.LocationAvailableReceiver;
 import com.avielniego.openhvr.location.LocationPermissionVerifier;
+import com.avielniego.openhvr.ui.NewRestaurantAlert;
 import com.avielniego.openhvr.ui.about.AboutActivity;
 import com.avielniego.openhvr.ui.analytics.AnalyticsApplication;
 import com.avielniego.openhvr.ui.analytics.AnalyticsLogger;
@@ -51,11 +51,15 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-        logger = new AnalyticsLogger((AnalyticsApplication) getApplication());
         initServices();
         initViewPager();
-        getLocation();
         registerLocationAvailableListener();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getLocation();
     }
 
     private void registerLocationAvailableListener() {
@@ -77,6 +81,7 @@ public class MainActivity extends AppCompatActivity
     private void initServices() {
         Fabric.with(this, new Crashlytics());
         OpenHvrSyncAdapter.initializeSyncAdapter(this);
+        logger = new AnalyticsLogger((AnalyticsApplication) getApplication());
         addAds();
     }
 
@@ -128,28 +133,14 @@ public class MainActivity extends AppCompatActivity
             return;
         }
 
-        LocationListener locationListener = new LocationListener()
+        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, new LocationAdapter()
         {
             public void onLocationChanged(Location location)
             {
                 onLocationReceived(location);
             }
-
-            public void onStatusChanged(String provider, int status, Bundle extras)
-            {
-            }
-
-            public void onProviderEnabled(String provider)
-            {
-            }
-
-            public void onProviderDisabled(String provider)
-            {
-            }
-        };
-
-        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+        });
         onLocationReceived(locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER));
     }
 
